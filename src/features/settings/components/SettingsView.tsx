@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ask, open } from "@tauri-apps/plugin-dialog";
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down";
@@ -312,6 +313,7 @@ export function SettingsView({
   onRemoveDictationModel,
   initialSection,
 }: SettingsViewProps) {
+  const { t, i18n } = useTranslation();
   const [activeSection, setActiveSection] = useState<CodexSection>("projects");
   const [codexPathDraft, setCodexPathDraft] = useState(appSettings.codexBin ?? "");
   const [codexArgsDraft, setCodexArgsDraft] = useState(appSettings.codexArgs ?? "");
@@ -1329,9 +1331,28 @@ export function SettingsView({
                 <div className="settings-section-subtitle">
                   Tune visuals and audio alerts to your preferences.
                 </div>
-                <div className="settings-subsection-title">Display</div>
+                <div className="settings-subsection-title">{t("settings.appearance")}</div>
                 <div className="settings-subsection-subtitle">
                   Adjust how the window renders backgrounds and effects.
+                </div>
+                <div className="settings-field">
+                  <label className="settings-field-label" htmlFor="language-select">
+                    {t("settings.language")}
+                  </label>
+                  <select
+                    id="language-select"
+                    className="settings-select"
+                    value={i18n.language.startsWith("zh") ? "zh" : "en"}
+                    onChange={(event) => {
+                      void i18n.changeLanguage(event.target.value);
+                    }}
+                  >
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                  </select>
+                  <div className="settings-help">
+                    {t("settings.languageDescription")}
+                  </div>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="theme-select">
