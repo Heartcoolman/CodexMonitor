@@ -65,8 +65,8 @@ pub(crate) async fn codex_doctor(
         .filter(|value| !value.trim().is_empty())
         .or(default_args);
     let path_env = build_codex_path_env(resolved.as_deref());
-    let version = check_codex_installation(resolved.clone()).await?;
-    let mut command = build_codex_command_with_bin(resolved.clone());
+    let version = check_codex_installation(resolved.clone(), None).await?;
+    let mut command = build_codex_command_with_bin(resolved.clone(), None);
     apply_codex_args(&mut command, resolved_args.as_deref())?;
     command.arg("app-server");
     command.arg("--help");
