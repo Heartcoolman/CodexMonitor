@@ -70,12 +70,6 @@ type ComposerPresetSettings = Pick<
   | "composerCodeBlockCopyUseModifier"
 >;
 
-const COMPOSER_PRESET_LABELS: Record<ComposerPreset, string> = {
-  default: "Default (no helpers)",
-  helpful: "Helpful",
-  smart: "Smart",
-};
-
 const COMPOSER_PRESET_CONFIGS: Record<ComposerPreset, ComposerPresetSettings> = {
   default: {
     composerFenceExpandOnSpace: false,
@@ -1025,12 +1019,12 @@ export function SettingsView({
       <div className="settings-backdrop" onClick={onClose} />
       <div className="settings-window">
         <div className="settings-titlebar">
-          <div className="settings-title">Settings</div>
+          <div className="settings-title">{t("settings.title")}</div>
           <button
             type="button"
             className="ghost icon-button settings-close"
             onClick={onClose}
-            aria-label="Close settings"
+            aria-label={t("settings.closeSettings")}
           >
             <X aria-hidden />
           </button>
@@ -1043,7 +1037,7 @@ export function SettingsView({
               onClick={() => setActiveSection("projects")}
             >
               <LayoutGrid aria-hidden />
-              Projects
+              {t("settings.projectsNav")}
             </button>
             <button
               type="button"
@@ -1051,7 +1045,7 @@ export function SettingsView({
               onClick={() => setActiveSection("display")}
             >
               <SlidersHorizontal aria-hidden />
-              Display &amp; Sound
+              {t("settings.displayAndSoundNav")}
             </button>
             <button
               type="button"
@@ -1059,7 +1053,7 @@ export function SettingsView({
               onClick={() => setActiveSection("composer")}
             >
               <FileText aria-hidden />
-              Composer
+              {t("settings.composerNav")}
             </button>
             <button
               type="button"
@@ -1067,7 +1061,7 @@ export function SettingsView({
               onClick={() => setActiveSection("dictation")}
             >
               <Mic aria-hidden />
-              Dictation
+              {t("settings.dictationNav")}
             </button>
             <button
               type="button"
@@ -1075,7 +1069,7 @@ export function SettingsView({
               onClick={() => setActiveSection("shortcuts")}
             >
               <Keyboard aria-hidden />
-              Shortcuts
+              {t("settings.shortcutsNav")}
             </button>
             <button
               type="button"
@@ -1083,7 +1077,7 @@ export function SettingsView({
               onClick={() => setActiveSection("open-apps")}
             >
               <ExternalLink aria-hidden />
-              Open in
+              {t("settings.openInNav")}
             </button>
             <button
               type="button"
@@ -1091,7 +1085,7 @@ export function SettingsView({
               onClick={() => setActiveSection("git")}
             >
               <GitBranch aria-hidden />
-              Git
+              {t("settings.gitNav")}
             </button>
             <button
               type="button"
@@ -1099,7 +1093,7 @@ export function SettingsView({
               onClick={() => setActiveSection("codex")}
             >
               <TerminalSquare aria-hidden />
-              Codex
+              {t("settings.codexNav")}
             </button>
             <button
               type="button"
@@ -1107,26 +1101,26 @@ export function SettingsView({
               onClick={() => setActiveSection("features")}
             >
               <FlaskConical aria-hidden />
-              Features
+              {t("settings.featuresNav")}
             </button>
           </aside>
           <div className="settings-content">
             {activeSection === "projects" && (
               <section className="settings-section">
-                <div className="settings-section-title">Projects</div>
+                <div className="settings-section-title">{t("settings.projectsTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Group related workspaces and reorder projects within each group.
+                  {t("settings.projectsDescription")}
                 </div>
-                <div className="settings-subsection-title">Groups</div>
+                <div className="settings-subsection-title">{t("settings.groupsSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Create group labels for related repositories.
+                  {t("settings.groupsDescription")}
                 </div>
                 <div className="settings-groups">
                   <div className="settings-group-create">
                     <input
                       className="settings-input settings-input--compact"
                       value={newGroupName}
-                      placeholder="New group name"
+                      placeholder={t("settings.newGroupNamePlaceholder")}
                       onChange={(event) => setNewGroupName(event.target.value)}
                       onKeyDown={(event) => {
                         if (event.key === "Enter" && canCreateGroup) {
@@ -1143,7 +1137,7 @@ export function SettingsView({
                       }}
                       disabled={!canCreateGroup}
                     >
-                      Add group
+                      {t("settings.addGroup")}
                     </button>
                   </div>
                   {groupError && <div className="settings-group-error">{groupError}</div>}
@@ -1173,7 +1167,7 @@ export function SettingsView({
                             />
                             <div className="settings-group-copies">
                               <div className="settings-group-copies-label">
-                                Copies folder
+                                {t("settings.copiesFolder")}
                               </div>
                               <div className="settings-group-copies-row">
                                 <div
@@ -1182,7 +1176,7 @@ export function SettingsView({
                                   }`}
                                   title={group.copiesFolder ?? ""}
                                 >
-                                  {group.copiesFolder ?? "Not set"}
+                                  {group.copiesFolder ?? t("settings.notSet")}
                                 </div>
                                 <button
                                   type="button"
@@ -1191,7 +1185,7 @@ export function SettingsView({
                                     void handleChooseGroupCopiesFolder(group);
                                   }}
                                 >
-                                  Choose…
+                                  {t("settings.choose")}
                                 </button>
                                 <button
                                   type="button"
@@ -1201,7 +1195,7 @@ export function SettingsView({
                                   }}
                                   disabled={!group.copiesFolder}
                                 >
-                                  Clear
+                                  {t("common.clear")}
                                 </button>
                               </div>
                             </div>
@@ -1214,7 +1208,7 @@ export function SettingsView({
                                 void onMoveWorkspaceGroup(group.id, "up");
                               }}
                               disabled={index === 0}
-                              aria-label="Move group up"
+                              aria-label={t("settings.moveGroupUp")}
                             >
                               <ChevronUp aria-hidden />
                             </button>
@@ -1225,7 +1219,7 @@ export function SettingsView({
                                 void onMoveWorkspaceGroup(group.id, "down");
                               }}
                               disabled={index === workspaceGroups.length - 1}
-                              aria-label="Move group down"
+                              aria-label={t("settings.moveGroupDown")}
                             >
                               <ChevronDown aria-hidden />
                             </button>
@@ -1235,7 +1229,7 @@ export function SettingsView({
                               onClick={() => {
                                 void handleDeleteGroup(group);
                               }}
-                              aria-label="Delete group"
+                              aria-label={t("settings.deleteGroupLabel")}
                             >
                               <Trash2 aria-hidden />
                             </button>
@@ -1244,12 +1238,12 @@ export function SettingsView({
                       ))}
                     </div>
                   ) : (
-                    <div className="settings-empty">No groups yet.</div>
+                    <div className="settings-empty">{t("settings.noGroupsYet")}</div>
                   )}
                 </div>
-                <div className="settings-subsection-title">Projects</div>
+                <div className="settings-subsection-title">{t("settings.projectsSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Assign projects to groups and adjust their order.
+                  {t("settings.projectsAssignDescription")}
                 </div>
                 <div className="settings-projects">
                   {groupedWorkspaces.map((group) => (
@@ -1292,7 +1286,7 @@ export function SettingsView({
                                 className="ghost icon-button"
                                 onClick={() => onMoveWorkspace(workspace.id, "up")}
                                 disabled={index === 0}
-                                aria-label="Move project up"
+                                aria-label={t("settings.moveProjectUp")}
                               >
                                 <ChevronUp aria-hidden />
                               </button>
@@ -1301,7 +1295,7 @@ export function SettingsView({
                                 className="ghost icon-button"
                                 onClick={() => onMoveWorkspace(workspace.id, "down")}
                                 disabled={index === group.workspaces.length - 1}
-                                aria-label="Move project down"
+                                aria-label={t("settings.moveProjectDown")}
                               >
                                 <ChevronDown aria-hidden />
                               </button>
@@ -1309,7 +1303,7 @@ export function SettingsView({
                                 type="button"
                                 className="ghost icon-button"
                                 onClick={() => onDeleteWorkspace(workspace.id)}
-                                aria-label="Delete project"
+                                aria-label={t("settings.deleteProjectLabel")}
                               >
                                 <Trash2 aria-hidden />
                               </button>
@@ -1320,20 +1314,20 @@ export function SettingsView({
                     </div>
                   ))}
                   {projects.length === 0 && (
-                    <div className="settings-empty">No projects yet.</div>
+                    <div className="settings-empty">{t("settings.noProjectsYet")}</div>
                   )}
                 </div>
               </section>
             )}
             {activeSection === "display" && (
               <section className="settings-section">
-                <div className="settings-section-title">Display &amp; Sound</div>
+                <div className="settings-section-title">{t("settings.displaySoundTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Tune visuals and audio alerts to your preferences.
+                  {t("settings.displaySoundDescription")}
                 </div>
                 <div className="settings-subsection-title">{t("settings.appearance")}</div>
                 <div className="settings-subsection-subtitle">
-                  Adjust how the window renders backgrounds and effects.
+                  {t("settings.appearanceDescription")}
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="language-select">
@@ -1356,7 +1350,7 @@ export function SettingsView({
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="theme-select">
-                    Theme
+                    {t("settings.themeLabel")}
                   </label>
                   <select
                     id="theme-select"
@@ -1369,19 +1363,19 @@ export function SettingsView({
                       })
                     }
                   >
-                    <option value="system">System</option>
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                    <option value="dim">Dim</option>
+                    <option value="system">{t("settings.themeSystem")}</option>
+                    <option value="light">{t("settings.themeLight")}</option>
+                    <option value="dark">{t("settings.themeDark")}</option>
+                    <option value="dim">{t("settings.themeDim")}</option>
                   </select>
                 </div>
                 <div className="settings-toggle-row">
                   <div>
                     <div className="settings-toggle-title">
-                      Show remaining Codex limits
+                      {t("settings.showRemainingLimitsTitle")}
                     </div>
                     <div className="settings-toggle-subtitle">
-                      Display what is left instead of what is used.
+                      {t("settings.showRemainingLimitsDesc")}
                     </div>
                   </div>
                   <button
@@ -1402,9 +1396,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Reduce transparency</div>
+                    <div className="settings-toggle-title">{t("settings.reduceTransparencyTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Use solid surfaces instead of glass.
+                      {t("settings.reduceTransparencyDesc")}
                     </div>
                   </div>
                   <button
@@ -1418,7 +1412,7 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row settings-scale-row">
                   <div>
-                    <div className="settings-toggle-title">Interface scale</div>
+                    <div className="settings-toggle-title">{t("settings.interfaceScaleTitle")}</div>
                     <div
                       className="settings-toggle-subtitle"
                       title={scaleShortcutTitle}
@@ -1433,7 +1427,7 @@ export function SettingsView({
                       inputMode="decimal"
                       className="settings-input settings-input--scale"
                       value={scaleDraft}
-                      aria-label="Interface scale"
+                      aria-label={t("settings.interfaceScaleLabel")}
                       onChange={(event) => setScaleDraft(event.target.value)}
                       onBlur={() => {
                         void handleCommitScale();
@@ -1452,13 +1446,13 @@ export function SettingsView({
                         void handleResetScale();
                       }}
                     >
-                      Reset
+                      {t("common.reset")}
                     </button>
                   </div>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="ui-font-family">
-                    UI font family
+                    {t("settings.uiFontFamilyLabel")}
                   </label>
                   <div className="settings-field-row">
                     <input
@@ -1488,16 +1482,16 @@ export function SettingsView({
                         });
                       }}
                     >
-                      Reset
+                      {t("common.reset")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Applies to all UI text. Leave empty to use the default system font stack.
+                    {t("settings.uiFontFamilyHelp")}
                   </div>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="code-font-family">
-                    Code font family
+                    {t("settings.codeFontFamilyLabel")}
                   </label>
                   <div className="settings-field-row">
                     <input
@@ -1527,16 +1521,16 @@ export function SettingsView({
                         });
                       }}
                     >
-                      Reset
+                      {t("common.reset")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Applies to git diffs and other mono-spaced readouts.
+                    {t("settings.codeFontFamilyHelp")}
                   </div>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="code-font-size">
-                    Code font size
+                    {t("settings.codeFontSizeLabel")}
                   </label>
                   <div className="settings-field-row">
                     <input
@@ -1562,22 +1556,22 @@ export function SettingsView({
                         void handleCommitCodeFontSize(CODE_FONT_SIZE_DEFAULT);
                       }}
                     >
-                      Reset
+                      {t("common.reset")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Adjusts code and diff text size.
+                    {t("settings.codeFontSizeHelp")}
                   </div>
                 </div>
-                <div className="settings-subsection-title">Sounds</div>
+                <div className="settings-subsection-title">{t("settings.soundsSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Control notification audio alerts.
+                  {t("settings.soundsDescription")}
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Notification sounds</div>
+                    <div className="settings-toggle-title">{t("settings.notificationSoundsTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Play a sound when a long-running agent finishes while the window is unfocused.
+                      {t("settings.notificationSoundsDesc")}
                     </div>
                   </div>
                   <button
@@ -1596,9 +1590,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">System notifications</div>
+                    <div className="settings-toggle-title">{t("settings.systemNotificationsTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Show a macOS notification when a long-running agent finishes while the window is unfocused.
+                      {t("settings.systemNotificationsDesc")}
                     </div>
                   </div>
                   <button
@@ -1621,31 +1615,31 @@ export function SettingsView({
                     className="ghost settings-button-compact"
                     onClick={onTestNotificationSound}
                   >
-                    Test sound
+                    {t("settings.testSound")}
                   </button>
                   <button
                     type="button"
                     className="ghost settings-button-compact"
                     onClick={onTestSystemNotification}
                   >
-                    Test notification
+                    {t("settings.testNotification")}
                   </button>
                 </div>
               </section>
             )}
             {activeSection === "composer" && (
               <section className="settings-section">
-                <div className="settings-section-title">Composer</div>
+                <div className="settings-section-title">{t("settings.composerTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Control helpers and formatting behavior inside the message editor.
+                  {t("settings.composerPageDescription")}
                 </div>
-                <div className="settings-subsection-title">Presets</div>
+                <div className="settings-subsection-title">{t("settings.presetsSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Choose a starting point and fine-tune the toggles below.
+                  {t("settings.presetsDescription")}
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="composer-preset">
-                    Preset
+                    {t("settings.presetLabel")}
                   </label>
                   <select
                     id="composer-preset"
@@ -1657,23 +1651,22 @@ export function SettingsView({
                       )
                     }
                   >
-                    {Object.entries(COMPOSER_PRESET_LABELS).map(([preset, label]) => (
-                      <option key={preset} value={preset}>
-                        {label}
-                      </option>
-                    ))}
+                    {/* Preset options with translation */}
+                    <option value="default">{t("settings.presetDefault")}</option>
+                    <option value="helpful">{t("settings.presetHelpful")}</option>
+                    <option value="smart">{t("settings.presetSmart")}</option>
                   </select>
                   <div className="settings-help">
-                    Presets update the toggles below. Customize any setting after selecting.
+                    {t("settings.presetHelp")}
                   </div>
                 </div>
                 <div className="settings-divider" />
-                <div className="settings-subsection-title">Code fences</div>
+                <div className="settings-subsection-title">{t("settings.codeFencesSubtitle")}</div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Expand fences on Space</div>
+                    <div className="settings-toggle-title">{t("settings.expandFencesOnSpaceTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Typing ``` then Space inserts a fenced block.
+                      {t("settings.expandFencesOnSpaceDesc")}
                     </div>
                   </div>
                   <button
@@ -1692,9 +1685,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Expand fences on Enter</div>
+                    <div className="settings-toggle-title">{t("settings.expandFencesOnEnterTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Use Enter to expand ``` lines when enabled.
+                      {t("settings.expandFencesOnEnterDesc")}
                     </div>
                   </div>
                   <button
@@ -1713,9 +1706,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Support language tags</div>
+                    <div className="settings-toggle-title">{t("settings.supportLanguageTagsTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Allows ```lang + Space to include a language.
+                      {t("settings.supportLanguageTagsDesc")}
                     </div>
                   </div>
                   <button
@@ -1734,9 +1727,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Wrap selection in fences</div>
+                    <div className="settings-toggle-title">{t("settings.wrapSelectionTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Wraps selected text when creating a fence.
+                      {t("settings.wrapSelectionDesc")}
                     </div>
                   </div>
                   <button
@@ -1755,9 +1748,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Copy blocks without fences</div>
+                    <div className="settings-toggle-title">{t("settings.copyBlocksWithoutFencesTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      When enabled, Copy is plain text. Hold Option to include ``` fences.
+                      {t("settings.copyBlocksWithoutFencesDesc")}
                     </div>
                   </div>
                   <button
@@ -1776,12 +1769,12 @@ export function SettingsView({
                   </button>
                 </div>
                 <div className="settings-divider" />
-                <div className="settings-subsection-title">Pasting</div>
+                <div className="settings-subsection-title">{t("settings.pastingSubtitle")}</div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Auto-wrap multi-line paste</div>
+                    <div className="settings-toggle-title">{t("settings.autoWrapMultilineTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Wraps multi-line paste inside a fenced block.
+                      {t("settings.autoWrapMultilineDesc")}
                     </div>
                   </div>
                   <button
@@ -1801,9 +1794,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Auto-wrap code-like single lines</div>
+                    <div className="settings-toggle-title">{t("settings.autoWrapCodeLikeTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Wraps long single-line code snippets on paste.
+                      {t("settings.autoWrapCodeLikeDesc")}
                     </div>
                   </div>
                   <button
@@ -1822,12 +1815,12 @@ export function SettingsView({
                   </button>
                 </div>
                 <div className="settings-divider" />
-                <div className="settings-subsection-title">Lists</div>
+                <div className="settings-subsection-title">{t("settings.listsSubtitle")}</div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Continue lists on Shift+Enter</div>
+                    <div className="settings-toggle-title">{t("settings.continueListsTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Continues numbered and bulleted lists when the line has content.
+                      {t("settings.continueListsDesc")}
                     </div>
                   </div>
                   <button
@@ -1848,15 +1841,15 @@ export function SettingsView({
             )}
             {activeSection === "dictation" && (
               <section className="settings-section">
-                <div className="settings-section-title">Dictation</div>
+                <div className="settings-section-title">{t("settings.dictationTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Enable microphone dictation with on-device transcription.
+                  {t("settings.dictationPageDescription")}
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Enable dictation</div>
+                    <div className="settings-toggle-title">{t("settings.enableDictationTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Downloads the selected Whisper model on first use.
+                      {t("settings.enableDictationDesc")}
                     </div>
                   </div>
                   <button
@@ -1890,7 +1883,7 @@ export function SettingsView({
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="dictation-model">
-                    Dictation model
+                    {t("settings.dictationModelLabel")}
                   </label>
                   <select
                     id="dictation-model"
@@ -1910,12 +1903,12 @@ export function SettingsView({
                     ))}
                   </select>
                   <div className="settings-help">
-                    {selectedDictationModel.note} Download size: {selectedDictationModel.size}.
+                    {selectedDictationModel.note} {t("settings.downloadSizeLabel")}: {selectedDictationModel.size}.
                   </div>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="dictation-language">
-                    Preferred dictation language
+                    {t("settings.preferredLanguageLabel")}
                   </label>
                   <select
                     id="dictation-language"
@@ -1928,33 +1921,33 @@ export function SettingsView({
                       })
                     }
                   >
-                    <option value="">Auto-detect only</option>
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="it">Italian</option>
-                    <option value="pt">Portuguese</option>
-                    <option value="nl">Dutch</option>
-                    <option value="sv">Swedish</option>
-                    <option value="no">Norwegian</option>
-                    <option value="da">Danish</option>
-                    <option value="fi">Finnish</option>
-                    <option value="pl">Polish</option>
-                    <option value="tr">Turkish</option>
-                    <option value="ru">Russian</option>
-                    <option value="uk">Ukrainian</option>
-                    <option value="ja">Japanese</option>
-                    <option value="ko">Korean</option>
-                    <option value="zh">Chinese</option>
+                    <option value="">{t("settings.autoDetectOnly")}</option>
+                    <option value="en">{t("settings.languageEnglish")}</option>
+                    <option value="es">{t("settings.languageSpanish")}</option>
+                    <option value="fr">{t("settings.languageFrench")}</option>
+                    <option value="de">{t("settings.languageGerman")}</option>
+                    <option value="it">{t("settings.languageItalian")}</option>
+                    <option value="pt">{t("settings.languagePortuguese")}</option>
+                    <option value="nl">{t("settings.languageDutch")}</option>
+                    <option value="sv">{t("settings.languageSwedish")}</option>
+                    <option value="no">{t("settings.languageNorwegian")}</option>
+                    <option value="da">{t("settings.languageDanish")}</option>
+                    <option value="fi">{t("settings.languageFinnish")}</option>
+                    <option value="pl">{t("settings.languagePolish")}</option>
+                    <option value="tr">{t("settings.languageTurkish")}</option>
+                    <option value="ru">{t("settings.languageRussian")}</option>
+                    <option value="uk">{t("settings.languageUkrainian")}</option>
+                    <option value="ja">{t("settings.languageJapanese")}</option>
+                    <option value="ko">{t("settings.languageKorean")}</option>
+                    <option value="zh">{t("settings.languageChinese")}</option>
                   </select>
                   <div className="settings-help">
-                    Auto-detect stays on; this nudges the decoder toward your preference.
+                    {t("settings.preferredLanguageHelp")}
                   </div>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="dictation-hold-key">
-                    Hold-to-dictate key
+                    {t("settings.holdToDictateLabel")}
                   </label>
                   <select
                     id="dictation-hold-key"
@@ -1967,28 +1960,28 @@ export function SettingsView({
                       })
                     }
                   >
-                    <option value="">Off</option>
-                    <option value="alt">Option / Alt</option>
-                    <option value="shift">Shift</option>
-                    <option value="control">Control</option>
-                    <option value="meta">Command / Meta</option>
+                    <option value="">{t("settings.holdKeyOff")}</option>
+                    <option value="alt">{t("settings.holdKeyOptionAlt")}</option>
+                    <option value="shift">{t("settings.holdKeyShift")}</option>
+                    <option value="control">{t("settings.holdKeyControl")}</option>
+                    <option value="meta">{t("settings.holdKeyCommandMeta")}</option>
                   </select>
                   <div className="settings-help">
-                    Hold the key to start dictation, release to stop and process.
+                    {t("settings.holdToDictateHelp")}
                   </div>
                 </div>
                 {dictationModelStatus && (
                   <div className="settings-field">
                     <div className="settings-field-label">
-                      Model status ({selectedDictationModel.label})
+                      {t("settings.modelStatusLabel")} ({selectedDictationModel.label})
                     </div>
                     <div className="settings-help">
-                      {dictationModelStatus.state === "ready" && "Ready for dictation."}
-                      {dictationModelStatus.state === "missing" && "Model not downloaded yet."}
+                      {dictationModelStatus.state === "ready" && t("settings.modelReady")}
+                      {dictationModelStatus.state === "missing" && t("settings.modelMissing")}
                       {dictationModelStatus.state === "downloading" &&
-                        "Downloading model..."}
+                        t("settings.modelDownloading")}
                       {dictationModelStatus.state === "error" &&
-                        (dictationModelStatus.error ?? "Download error.")}
+                        (dictationModelStatus.error ?? t("settings.modelError"))}
                     </div>
                     {dictationProgress && (
                       <div className="settings-download-progress">
@@ -2020,7 +2013,7 @@ export function SettingsView({
                           onClick={onDownloadDictationModel}
                           disabled={!onDownloadDictationModel}
                         >
-                          Download model
+                          {t("settings.downloadModelBtn")}
                         </button>
                       )}
                       {dictationModelStatus.state === "downloading" && (
@@ -2030,7 +2023,7 @@ export function SettingsView({
                           onClick={onCancelDictationDownload}
                           disabled={!onCancelDictationDownload}
                         >
-                          Cancel download
+                          {t("settings.cancelDownloadBtn")}
                         </button>
                       )}
                       {dictationReady && (
@@ -2040,7 +2033,7 @@ export function SettingsView({
                           onClick={onRemoveDictationModel}
                           disabled={!onRemoveDictationModel}
                         >
-                          Remove model
+                          {t("settings.removeModelBtn")}
                         </button>
                       )}
                     </div>
@@ -2050,16 +2043,16 @@ export function SettingsView({
             )}
             {activeSection === "shortcuts" && (
               <section className="settings-section">
-                <div className="settings-section-title">Shortcuts</div>
+                <div className="settings-section-title">{t("settings.shortcutsTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Customize keyboard shortcuts for file actions, composer, panels, and navigation.
+                  {t("settings.shortcutsPageDescription")}
                 </div>
-                <div className="settings-subsection-title">File</div>
+                <div className="settings-subsection-title">{t("settings.fileSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Create agents and worktrees from the keyboard.
+                  {t("settings.fileShortcutsDesc")}
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">New Agent</div>
+                  <div className="settings-field-label">{t("settings.newAgentLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2067,7 +2060,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "newAgentShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2075,15 +2068,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("newAgentShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+n")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+n")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">New Worktree Agent</div>
+                  <div className="settings-field-label">{t("settings.newWorktreeAgentLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2091,7 +2084,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "newWorktreeAgentShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2099,15 +2092,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("newWorktreeAgentShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+n")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+n")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">New Clone Agent</div>
+                  <div className="settings-field-label">{t("settings.newCloneAgentLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2115,7 +2108,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "newCloneAgentShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2123,15 +2116,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("newCloneAgentShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+alt+n")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+alt+n")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Archive active thread</div>
+                  <div className="settings-field-label">{t("settings.archiveActiveThreadLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2139,7 +2132,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "archiveThreadShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2147,20 +2140,20 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("archiveThreadShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+ctrl+a")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+ctrl+a")}
                   </div>
                 </div>
                 <div className="settings-divider" />
-                <div className="settings-subsection-title">Composer</div>
+                <div className="settings-subsection-title">{t("settings.composerShortcutsSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Cycle between model, access, reasoning, and collaboration modes.
+                  {t("settings.composerShortcutsDesc")}
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Cycle model</div>
+                  <div className="settings-field-label">{t("settings.cycleModelLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2168,7 +2161,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "composerModelShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2176,15 +2169,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("composerModelShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Press a new shortcut while focused. Default: {formatShortcut("cmd+shift+m")}
+                    {t("settings.cycleModelHelp")} {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+m")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Cycle access mode</div>
+                  <div className="settings-field-label">{t("settings.cycleAccessModeLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2192,7 +2185,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "composerAccessShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2200,15 +2193,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("composerAccessShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+a")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+a")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Cycle reasoning mode</div>
+                  <div className="settings-field-label">{t("settings.cycleReasoningModeLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2216,7 +2209,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "composerReasoningShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2224,15 +2217,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("composerReasoningShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+r")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+r")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Cycle collaboration mode</div>
+                  <div className="settings-field-label">{t("settings.cycleCollaborationModeLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2240,7 +2233,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "composerCollaborationShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2248,15 +2241,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("composerCollaborationShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("shift+tab")}
+                    {t("settings.defaultLabel")}: {formatShortcut("shift+tab")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Stop active run</div>
+                  <div className="settings-field-label">{t("settings.stopActiveRunLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2264,7 +2257,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "interruptShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2272,20 +2265,20 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("interruptShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut(getDefaultInterruptShortcut())}
+                    {t("settings.defaultLabel")}: {formatShortcut(getDefaultInterruptShortcut())}
                   </div>
                 </div>
                 <div className="settings-divider" />
-                <div className="settings-subsection-title">Panels</div>
+                <div className="settings-subsection-title">{t("settings.panelsSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Toggle sidebars and panels.
+                  {t("settings.panelsDesc")}
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Toggle projects sidebar</div>
+                  <div className="settings-field-label">{t("settings.toggleProjectsSidebarLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2293,7 +2286,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "toggleProjectsSidebarShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2301,15 +2294,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("toggleProjectsSidebarShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+p")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+p")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Toggle git sidebar</div>
+                  <div className="settings-field-label">{t("settings.toggleGitSidebarLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2317,7 +2310,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "toggleGitSidebarShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2325,15 +2318,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("toggleGitSidebarShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+g")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+g")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Branch switcher</div>
+                  <div className="settings-field-label">{t("settings.branchSwitcherLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2341,7 +2334,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "branchSwitcherShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2349,15 +2342,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("branchSwitcherShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+b")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+b")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Toggle debug panel</div>
+                  <div className="settings-field-label">{t("settings.toggleDebugPanelLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2365,7 +2358,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "toggleDebugPanelShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2373,15 +2366,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("toggleDebugPanelShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+d")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+d")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Toggle terminal panel</div>
+                  <div className="settings-field-label">{t("settings.toggleTerminalPanelLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2389,7 +2382,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "toggleTerminalShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2397,20 +2390,20 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("toggleTerminalShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+t")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+t")}
                   </div>
                 </div>
                 <div className="settings-divider" />
-                <div className="settings-subsection-title">Navigation</div>
+                <div className="settings-subsection-title">{t("settings.navigationSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Cycle between agents and workspaces.
+                  {t("settings.navigationDesc")}
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Next agent</div>
+                  <div className="settings-field-label">{t("settings.nextAgentLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2418,7 +2411,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "cycleAgentNextShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2426,15 +2419,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("cycleAgentNextShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+ctrl+down")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+ctrl+down")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Previous agent</div>
+                  <div className="settings-field-label">{t("settings.previousAgentLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2442,7 +2435,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "cycleAgentPrevShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2450,15 +2443,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("cycleAgentPrevShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+ctrl+up")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+ctrl+up")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Next workspace</div>
+                  <div className="settings-field-label">{t("settings.nextWorkspaceLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2466,7 +2459,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "cycleWorkspaceNextShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2474,15 +2467,15 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("cycleWorkspaceNextShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+down")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+down")}
                   </div>
                 </div>
                 <div className="settings-field">
-                  <div className="settings-field-label">Previous workspace</div>
+                  <div className="settings-field-label">{t("settings.previousWorkspaceLabel")}</div>
                   <div className="settings-field-row">
                     <input
                       className="settings-input settings-input--shortcut"
@@ -2490,7 +2483,7 @@ export function SettingsView({
                       onKeyDown={(event) =>
                         handleShortcutKeyDown(event, "cycleWorkspacePrevShortcut")
                       }
-                      placeholder="Type shortcut"
+                      placeholder={t("settings.typeShortcut")}
                       readOnly
                     />
                     <button
@@ -2498,20 +2491,20 @@ export function SettingsView({
                       className="ghost settings-button-compact"
                       onClick={() => void updateShortcut("cycleWorkspacePrevShortcut", null)}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Default: {formatShortcut("cmd+shift+up")}
+                    {t("settings.defaultLabel")}: {formatShortcut("cmd+shift+up")}
                   </div>
                 </div>
               </section>
             )}
             {activeSection === "open-apps" && (
               <section className="settings-section">
-                <div className="settings-section-title">Open in</div>
+                <div className="settings-section-title">{t("settings.openInTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Customize the Open in menu shown in the title bar and file previews.
+                  {t("settings.openInDescription")}
                 </div>
                 <div className="settings-open-apps">
                   {openAppDrafts.map((target, index) => {
@@ -2526,12 +2519,12 @@ export function SettingsView({
                       target.kind !== "command" || Boolean(target.command?.trim());
                     const isComplete = labelValid && appNameValid && commandValid;
                     const incompleteHint = !labelValid
-                      ? "Label required"
+                      ? t("settings.labelRequired")
                       : target.kind === "app"
-                        ? "App name required"
+                        ? t("settings.appNameRequired")
                         : target.kind === "command"
-                          ? "Command required"
-                          : "Complete required fields";
+                          ? t("settings.commandRequired")
+                          : t("settings.completeRequiredFields");
                     return (
                       <div
                         key={target.id}
@@ -2550,11 +2543,11 @@ export function SettingsView({
                         </div>
                         <div className="settings-open-app-fields">
                           <label className="settings-open-app-field settings-open-app-field--label">
-                            <span className="settings-visually-hidden">Label</span>
+                            <span className="settings-visually-hidden">{t("settings.openAppLabelVisually")}</span>
                             <input
                               className="settings-input settings-input--compact settings-open-app-input settings-open-app-input--label"
                               value={target.label}
-                              placeholder="Label"
+                              placeholder={t("settings.openAppLabelPlaceholder")}
                               onChange={(event) =>
                                 handleOpenAppDraftChange(index, {
                                   label: event.target.value,
@@ -2563,12 +2556,12 @@ export function SettingsView({
                               onBlur={() => {
                                 void handleCommitOpenApps(openAppDrafts);
                               }}
-                              aria-label={`Open app label ${index + 1}`}
+                              aria-label={`${t("settings.openAppLabelVisually")} ${index + 1}`}
                               data-invalid={!labelValid || undefined}
                             />
                           </label>
                           <label className="settings-open-app-field settings-open-app-field--type">
-                            <span className="settings-visually-hidden">Type</span>
+                            <span className="settings-visually-hidden">{t("settings.openAppTypeVisually")}</span>
                             <select
                               className="settings-select settings-select--compact settings-open-app-kind"
                               value={target.kind}
@@ -2578,20 +2571,20 @@ export function SettingsView({
                                   event.target.value as OpenAppTarget["kind"],
                                 )
                               }
-                              aria-label={`Open app type ${index + 1}`}
+                              aria-label={`${t("settings.openAppTypeVisually")} ${index + 1}`}
                             >
-                              <option value="app">App</option>
-                              <option value="command">Command</option>
-                              <option value="finder">Finder</option>
+                              <option value="app">{t("settings.openAppKindApp")}</option>
+                              <option value="command">{t("settings.openAppKindCommand")}</option>
+                              <option value="finder">{t("settings.openAppKindFinder")}</option>
                             </select>
                           </label>
                           {target.kind === "app" && (
                             <label className="settings-open-app-field settings-open-app-field--appname">
-                              <span className="settings-visually-hidden">App name</span>
+                              <span className="settings-visually-hidden">{t("settings.openAppNameVisually")}</span>
                               <input
                                 className="settings-input settings-input--compact settings-open-app-input settings-open-app-input--appname"
                                 value={target.appName ?? ""}
-                                placeholder="App name"
+                                placeholder={t("settings.openAppNamePlaceholder")}
                                 onChange={(event) =>
                                   handleOpenAppDraftChange(index, {
                                     appName: event.target.value,
@@ -2600,18 +2593,18 @@ export function SettingsView({
                                 onBlur={() => {
                                   void handleCommitOpenApps(openAppDrafts);
                                 }}
-                                aria-label={`Open app name ${index + 1}`}
+                                aria-label={`${t("settings.openAppNameVisually")} ${index + 1}`}
                                 data-invalid={!appNameValid || undefined}
                               />
                             </label>
                           )}
                           {target.kind === "command" && (
                             <label className="settings-open-app-field settings-open-app-field--command">
-                              <span className="settings-visually-hidden">Command</span>
+                              <span className="settings-visually-hidden">{t("settings.openAppCommandVisually")}</span>
                               <input
                                 className="settings-input settings-input--compact settings-open-app-input settings-open-app-input--command"
                                 value={target.command ?? ""}
-                                placeholder="Command"
+                                placeholder={t("settings.openAppCommandPlaceholder")}
                                 onChange={(event) =>
                                   handleOpenAppDraftChange(index, {
                                     command: event.target.value,
@@ -2620,18 +2613,18 @@ export function SettingsView({
                                 onBlur={() => {
                                   void handleCommitOpenApps(openAppDrafts);
                                 }}
-                                aria-label={`Open app command ${index + 1}`}
+                                aria-label={`${t("settings.openAppCommandVisually")} ${index + 1}`}
                                 data-invalid={!commandValid || undefined}
                               />
                             </label>
                           )}
                           {target.kind !== "finder" && (
                             <label className="settings-open-app-field settings-open-app-field--args">
-                              <span className="settings-visually-hidden">Args</span>
+                              <span className="settings-visually-hidden">{t("settings.openAppArgsVisually")}</span>
                               <input
                                 className="settings-input settings-input--compact settings-open-app-input settings-open-app-input--args"
                                 value={target.argsText}
-                                placeholder="Args"
+                                placeholder={t("settings.openAppArgsPlaceholder")}
                                 onChange={(event) =>
                                   handleOpenAppDraftChange(index, {
                                     argsText: event.target.value,
@@ -2640,7 +2633,7 @@ export function SettingsView({
                                 onBlur={() => {
                                   void handleCommitOpenApps(openAppDrafts);
                                 }}
-                                aria-label={`Open app args ${index + 1}`}
+                                aria-label={`${t("settings.openAppArgsVisually")} ${index + 1}`}
                               />
                             </label>
                           )}
@@ -2652,7 +2645,7 @@ export function SettingsView({
                               title={incompleteHint}
                               aria-label={incompleteHint}
                             >
-                              Incomplete
+                              {t("settings.incomplete")}
                             </span>
                           )}
                           <label className="settings-open-app-default">
@@ -2663,7 +2656,7 @@ export function SettingsView({
                               onChange={() => handleSelectOpenAppDefault(target.id)}
                               disabled={!isComplete}
                             />
-                            Default
+                            {t("settings.defaultRadio")}
                           </label>
                           <div className="settings-open-app-order">
                             <button
@@ -2671,7 +2664,7 @@ export function SettingsView({
                               className="ghost icon-button"
                               onClick={() => handleMoveOpenApp(index, "up")}
                               disabled={index === 0}
-                              aria-label="Move up"
+                              aria-label={t("settings.moveUp")}
                             >
                               <ChevronUp aria-hidden />
                             </button>
@@ -2680,7 +2673,7 @@ export function SettingsView({
                               className="ghost icon-button"
                               onClick={() => handleMoveOpenApp(index, "down")}
                               disabled={index === openAppDrafts.length - 1}
-                              aria-label="Move down"
+                              aria-label={t("settings.moveDown")}
                             >
                               <ChevronDown aria-hidden />
                             </button>
@@ -2690,8 +2683,8 @@ export function SettingsView({
                             className="ghost icon-button"
                             onClick={() => handleDeleteOpenApp(index)}
                             disabled={openAppDrafts.length <= 1}
-                            aria-label="Remove app"
-                            title="Remove app"
+                            aria-label={t("settings.removeApp")}
+                            title={t("settings.removeApp")}
                           >
                             <Trash2 aria-hidden />
                           </button>
@@ -2706,26 +2699,25 @@ export function SettingsView({
                     className="ghost"
                     onClick={handleAddOpenApp}
                   >
-                    Add app
+                    {t("settings.addApp")}
                   </button>
                   <div className="settings-help">
-                    Commands receive the selected path as the final argument. Apps use macOS open
-                    with optional args.
+                    {t("settings.openAppHelp")}
                   </div>
                 </div>
               </section>
             )}
             {activeSection === "git" && (
               <section className="settings-section">
-                <div className="settings-section-title">Git</div>
+                <div className="settings-section-title">{t("settings.gitTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Manage how diffs are loaded in the Git sidebar.
+                  {t("settings.gitDescription")}
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Preload git diffs</div>
+                    <div className="settings-toggle-title">{t("settings.preloadGitDiffsTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Make viewing git diff faster.
+                      {t("settings.preloadGitDiffsDesc")}
                     </div>
                   </div>
                   <button
@@ -2744,9 +2736,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Ignore whitespace changes</div>
+                    <div className="settings-toggle-title">{t("settings.ignoreWhitespaceTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Hides whitespace-only changes in local and commit diffs.
+                      {t("settings.ignoreWhitespaceDesc")}
                     </div>
                   </div>
                   <button
@@ -2767,45 +2759,45 @@ export function SettingsView({
             )}
             {activeSection === "codex" && (
               <section className="settings-section">
-                <div className="settings-section-title">Codex</div>
+                <div className="settings-section-title">{t("settings.codexTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Configure the Codex CLI used by CodexMonitor and validate the install.
+                  {t("settings.codexDescription")}
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="codex-path">
-                    Default Codex path
+                    {t("settings.defaultCodexPathLabel")}
                   </label>
                   <div className="settings-field-row">
                     <input
                       id="codex-path"
                       className="settings-input"
                       value={codexPathDraft}
-                      placeholder="codex"
+                      placeholder={t("settings.codexPathPlaceholder")}
                       onChange={(event) => setCodexPathDraft(event.target.value)}
                     />
                     <button type="button" className="ghost" onClick={handleBrowseCodex}>
-                      Browse
+                      {t("common.browse")}
                     </button>
                     <button
                       type="button"
                       className="ghost"
                       onClick={() => setCodexPathDraft("")}
                     >
-                      Use PATH
+                      {t("settings.usePath")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Leave empty to use the system PATH resolution.
+                    {t("settings.codexPathHelp")}
                   </div>
                   <label className="settings-field-label" htmlFor="codex-args">
-                    Default Codex args
+                    {t("settings.defaultCodexArgsLabel")}
                   </label>
                   <div className="settings-field-row">
                     <input
                       id="codex-args"
                       className="settings-input"
                       value={codexArgsDraft}
-                      placeholder="--profile personal"
+                      placeholder={t("settings.codexArgsPlaceholder")}
                       onChange={(event) => setCodexArgsDraft(event.target.value)}
                     />
                     <button
@@ -2813,12 +2805,11 @@ export function SettingsView({
                       className="ghost"
                       onClick={() => setCodexArgsDraft("")}
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   </div>
                   <div className="settings-help">
-                    Extra flags passed before <code>app-server</code>. Use quotes for values with
-                    spaces.
+                    {t("settings.codexArgsHelp")}
                   </div>
                 <div className="settings-field-actions">
                   {codexDirty && (
@@ -2828,7 +2819,7 @@ export function SettingsView({
                       onClick={handleSaveCodexSettings}
                       disabled={isSavingSettings}
                     >
-                      {isSavingSettings ? "Saving..." : "Save"}
+                      {isSavingSettings ? t("settings.saving") : t("common.save")}
                     </button>
                   )}
                   <button
@@ -2838,7 +2829,7 @@ export function SettingsView({
                     disabled={doctorState.status === "running"}
                   >
                     <Stethoscope aria-hidden />
-                    {doctorState.status === "running" ? "Running..." : "Run doctor"}
+                    {doctorState.status === "running" ? t("settings.running") : t("settings.runDoctor")}
                   </button>
                 </div>
 
@@ -2847,20 +2838,20 @@ export function SettingsView({
                     className={`settings-doctor ${doctorState.result.ok ? "ok" : "error"}`}
                   >
                     <div className="settings-doctor-title">
-                      {doctorState.result.ok ? "Codex looks good" : "Codex issue detected"}
+                      {doctorState.result.ok ? t("settings.codexLooksGood") : t("settings.codexIssueDetected")}
                     </div>
                     <div className="settings-doctor-body">
                       <div>
-                        Version: {doctorState.result.version ?? "unknown"}
+                        {t("settings.versionLabel")}: {doctorState.result.version ?? t("common.unknown")}
                       </div>
                       <div>
-                        App-server: {doctorState.result.appServerOk ? "ok" : "failed"}
+                        {t("settings.appServerLabel")}: {doctorState.result.appServerOk ? t("settings.okStatus") : t("settings.failedStatus")}
                       </div>
                       <div>
-                        Node:{" "}
+                        {t("settings.nodeLabel")}:{" "}
                         {doctorState.result.nodeOk
-                          ? `ok (${doctorState.result.nodeVersion ?? "unknown"})`
-                          : "missing"}
+                          ? `${t("settings.okStatus")} (${doctorState.result.nodeVersion ?? t("common.unknown")})`
+                          : t("settings.nodeMissing")}
                       </div>
                       {doctorState.result.details && (
                         <div>{doctorState.result.details}</div>
@@ -2870,7 +2861,7 @@ export function SettingsView({
                       )}
                       {doctorState.result.path && (
                         <div className="settings-doctor-path">
-                          PATH: {doctorState.result.path}
+                          {t("settings.pathLabel")}: {doctorState.result.path}
                         </div>
                       )}
                     </div>
@@ -2880,7 +2871,7 @@ export function SettingsView({
 
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="default-access">
-                    Default access mode
+                    {t("settings.defaultAccessModeLabel")}
                   </label>
                   <select
                     id="default-access"
@@ -2893,14 +2884,14 @@ export function SettingsView({
                       })
                     }
                   >
-                    <option value="read-only">Read only</option>
-                    <option value="current">On-request</option>
-                    <option value="full-access">Full access</option>
+                    <option value="read-only">{t("settings.accessReadOnly")}</option>
+                    <option value="current">{t("settings.accessOnRequest")}</option>
+                    <option value="full-access">{t("settings.accessFullAccess")}</option>
                   </select>
                 </div>
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="review-delivery">
-                    Review mode
+                    {t("settings.reviewModeLabel")}
                   </label>
                   <select
                     id="review-delivery"
@@ -2914,18 +2905,17 @@ export function SettingsView({
                       })
                     }
                   >
-                    <option value="inline">Inline (same thread)</option>
-                    <option value="detached">Detached (new review thread)</option>
+                    <option value="inline">{t("settings.reviewInline")}</option>
+                    <option value="detached">{t("settings.reviewDetached")}</option>
                   </select>
                   <div className="settings-help">
-                    Choose whether <code>/review</code> runs in the current thread or a detached
-                    review thread.
+                    {t("settings.reviewModeHelp")}
                   </div>
                 </div>
 
                 <div className="settings-field">
                   <label className="settings-field-label" htmlFor="backend-mode">
-                    Backend mode
+                    {t("settings.backendModeLabel")}
                   </label>
                   <select
                     id="backend-mode"
@@ -2938,22 +2928,22 @@ export function SettingsView({
                       })
                     }
                   >
-                    <option value="local">Local (default)</option>
-                    <option value="remote">Remote (daemon)</option>
+                    <option value="local">{t("settings.backendLocal")}</option>
+                    <option value="remote">{t("settings.backendRemote")}</option>
                   </select>
                   <div className="settings-help">
-                    Remote mode connects to a separate daemon running the backend on another machine (e.g. WSL2/Linux).
+                    {t("settings.backendModeHelp")}
                   </div>
                 </div>
 
                 {appSettings.backendMode === "remote" && (
                   <div className="settings-field">
-                    <div className="settings-field-label">Remote backend</div>
+                    <div className="settings-field-label">{t("settings.remoteBackendLabel")}</div>
                     <div className="settings-field-row">
                       <input
                         className="settings-input settings-input--compact"
                         value={remoteHostDraft}
-                        placeholder="127.0.0.1:4732"
+                        placeholder={t("settings.remoteHostPlaceholder")}
                         onChange={(event) => setRemoteHostDraft(event.target.value)}
                         onBlur={() => {
                           void handleCommitRemoteHost();
@@ -2964,13 +2954,13 @@ export function SettingsView({
                             void handleCommitRemoteHost();
                           }
                         }}
-                        aria-label="Remote backend host"
+                        aria-label={t("settings.remoteBackendHostLabel")}
                       />
                       <input
                         type="password"
                         className="settings-input settings-input--compact"
                         value={remoteTokenDraft}
-                        placeholder="Token (optional)"
+                        placeholder={t("settings.remoteTokenPlaceholder")}
                         onChange={(event) => setRemoteTokenDraft(event.target.value)}
                         onBlur={() => {
                           void handleCommitRemoteToken();
@@ -2981,21 +2971,21 @@ export function SettingsView({
                             void handleCommitRemoteToken();
                           }
                         }}
-                        aria-label="Remote backend token"
+                        aria-label={t("settings.remoteBackendTokenLabel")}
                       />
                     </div>
                     <div className="settings-help">
-                      Start the daemon separately and point CodexMonitor to it (host:port + token).
+                      {t("settings.remoteBackendHelp")}
                     </div>
                   </div>
                 )}
 
                 <FileEditorCard
-                  title="Global AGENTS.md"
+                  title={t("settings.globalAgentsMdTitle")}
                   meta={globalAgentsMeta}
                   error={globalAgentsError}
                   value={globalAgentsContent}
-                  placeholder="Add global instructions for Codex agents…"
+                  placeholder={t("settings.globalAgentsMdPlaceholder")}
                   disabled={globalAgentsLoading}
                   refreshDisabled={globalAgentsRefreshDisabled}
                   saveDisabled={globalAgentsSaveDisabled}
@@ -3009,7 +2999,7 @@ export function SettingsView({
                   }}
                   helpText={
                     <>
-                      Stored at <code>~/.codex/AGENTS.md</code>.
+                      {t("settings.globalAgentsMdHelp")}
                     </>
                   }
                   classNames={{
@@ -3026,11 +3016,11 @@ export function SettingsView({
                 />
 
                 <FileEditorCard
-                  title="Global config.toml"
+                  title={t("settings.globalConfigTomlTitle")}
                   meta={globalConfigMeta}
                   error={globalConfigError}
                   value={globalConfigContent}
-                  placeholder="Edit the global Codex config.toml…"
+                  placeholder={t("settings.globalConfigTomlPlaceholder")}
                   disabled={globalConfigLoading}
                   refreshDisabled={globalConfigRefreshDisabled}
                   saveDisabled={globalConfigSaveDisabled}
@@ -3044,7 +3034,7 @@ export function SettingsView({
                   }}
                   helpText={
                     <>
-                      Stored at <code>~/.codex/config.toml</code>.
+                      {t("settings.globalConfigTomlHelp")}
                     </>
                   }
                   classNames={{
@@ -3061,7 +3051,7 @@ export function SettingsView({
                 />
 
                 <div className="settings-field">
-                  <div className="settings-field-label">Workspace overrides</div>
+                  <div className="settings-field-label">{t("settings.workspaceOverridesLabel")}</div>
                   <div className="settings-overrides">
                     {projects.map((workspace) => (
                       <div key={workspace.id} className="settings-override-row">
@@ -3074,7 +3064,7 @@ export function SettingsView({
                             <input
                               className="settings-input settings-input--compact"
                               value={codexBinOverrideDrafts[workspace.id] ?? ""}
-                              placeholder="Codex binary override"
+                              placeholder={t("settings.codexBinaryOverridePlaceholder")}
                               onChange={(event) =>
                                 setCodexBinOverrideDrafts((prev) => ({
                                   ...prev,
@@ -3089,7 +3079,7 @@ export function SettingsView({
                                 }
                                 await onUpdateWorkspaceCodexBin(workspace.id, nextValue);
                               }}
-                              aria-label={`Codex binary override for ${workspace.name}`}
+                              aria-label={`${t("settings.codexBinaryOverrideLabel")} ${workspace.name}`}
                             />
                             <button
                               type="button"
@@ -3102,14 +3092,14 @@ export function SettingsView({
                                 await onUpdateWorkspaceCodexBin(workspace.id, null);
                               }}
                             >
-                              Clear
+                              {t("common.clear")}
                             </button>
                           </div>
                           <div className="settings-override-field">
                             <input
                               className="settings-input settings-input--compact"
                               value={codexHomeOverrideDrafts[workspace.id] ?? ""}
-                              placeholder="CODEX_HOME override"
+                              placeholder={t("settings.codexHomeOverridePlaceholder")}
                               onChange={(event) =>
                                 setCodexHomeOverrideDrafts((prev) => ({
                                   ...prev,
@@ -3126,7 +3116,7 @@ export function SettingsView({
                                   codexHome: nextValue,
                                 });
                               }}
-                              aria-label={`CODEX_HOME override for ${workspace.name}`}
+                              aria-label={`${t("settings.codexHomeOverrideLabel")} ${workspace.name}`}
                             />
                             <button
                               type="button"
@@ -3141,14 +3131,14 @@ export function SettingsView({
                                 });
                               }}
                             >
-                              Clear
+                              {t("common.clear")}
                             </button>
                           </div>
                           <div className="settings-override-field">
                             <input
                               className="settings-input settings-input--compact"
                               value={codexArgsOverrideDrafts[workspace.id] ?? ""}
-                              placeholder="Codex args override"
+                              placeholder={t("settings.codexArgsOverridePlaceholder")}
                               onChange={(event) =>
                                 setCodexArgsOverrideDrafts((prev) => ({
                                   ...prev,
@@ -3165,7 +3155,7 @@ export function SettingsView({
                                   codexArgs: nextValue,
                                 });
                               }}
-                              aria-label={`Codex args override for ${workspace.name}`}
+                              aria-label={`${t("settings.codexArgsOverrideLabel")} ${workspace.name}`}
                             />
                             <button
                               type="button"
@@ -3180,14 +3170,14 @@ export function SettingsView({
                                 });
                               }}
                             >
-                              Clear
+                              {t("common.clear")}
                             </button>
                           </div>
                         </div>
                       </div>
                     ))}
                     {projects.length === 0 && (
-                      <div className="settings-empty">No projects yet.</div>
+                      <div className="settings-empty">{t("settings.noProjectsYet")}</div>
                     )}
                   </div>
                 </div>
@@ -3196,40 +3186,40 @@ export function SettingsView({
             )}
             {activeSection === "features" && (
               <section className="settings-section">
-                <div className="settings-section-title">Features</div>
+                <div className="settings-section-title">{t("settings.featuresTitle")}</div>
                 <div className="settings-section-subtitle">
-                  Manage stable and experimental Codex features.
+                  {t("settings.featuresPageDescription")}
                 </div>
                 {hasCodexHomeOverrides && (
                   <div className="settings-help">
-                    Feature settings are stored in the default CODEX_HOME config.toml.
+                    {t("settings.featuresConfigNote")}
                     <br />
-                    Workspace overrides are not updated.
+                    {t("settings.workspaceOverridesNotUpdated")}
                   </div>
                 )}
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Config file</div>
+                    <div className="settings-toggle-title">{t("settings.configFileLabel")}</div>
                     <div className="settings-toggle-subtitle">
-                      Open the Codex config in Finder.
+                      {t("settings.configFileDesc")}
                     </div>
                   </div>
                   <button type="button" className="ghost" onClick={handleOpenConfig}>
-                    Open in Finder
+                    {t("settings.openInFinder")}
                   </button>
                 </div>
                 {openConfigError && (
                   <div className="settings-help">{openConfigError}</div>
                 )}
-                <div className="settings-subsection-title">Stable Features</div>
+                <div className="settings-subsection-title">{t("settings.stableFeaturesSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Production-ready features enabled by default.
+                  {t("settings.stableFeaturesDesc")}
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Collaboration modes</div>
+                    <div className="settings-toggle-title">{t("settings.collaborationModesTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Enable collaboration mode presets (Code, Plan).
+                      {t("settings.collaborationModesDesc")}
                     </div>
                   </div>
                   <button
@@ -3251,10 +3241,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Personality</div>
+                    <div className="settings-toggle-title">{t("settings.personalityTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Choose Codex communication style (writes top-level{" "}
-                      <code>personality</code> in config.toml).
+                      {t("settings.personalityDesc")}
                     </div>
                   </div>
                   <select
@@ -3267,21 +3256,21 @@ export function SettingsView({
                         personality: event.target.value as AppSettings["personality"],
                       })
                     }
-                    aria-label="Personality"
+                    aria-label={t("settings.personalityLabel")}
                   >
-                    <option value="friendly">Friendly</option>
-                    <option value="pragmatic">Pragmatic</option>
+                    <option value="friendly">{t("settings.personalityFriendly")}</option>
+                    <option value="pragmatic">{t("settings.personalityPragmatic")}</option>
                   </select>
                 </div>
-                <div className="settings-subsection-title">Experimental Features</div>
+                <div className="settings-subsection-title">{t("settings.experimentalFeaturesSubtitle")}</div>
                 <div className="settings-subsection-subtitle">
-                  Preview features that may change or be removed.
+                  {t("settings.experimentalFeaturesDesc")}
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Multi-agent</div>
+                    <div className="settings-toggle-title">{t("settings.multiAgentTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Enable multi-agent collaboration tools in Codex.
+                      {t("settings.multiAgentDesc")}
                     </div>
                   </div>
                   <button
@@ -3300,9 +3289,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Apps</div>
+                    <div className="settings-toggle-title">{t("settings.appsTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Enable ChatGPT apps/connectors and the <code>/apps</code> command.
+                      {t("settings.appsDesc")}
                     </div>
                   </div>
                   <button
@@ -3321,9 +3310,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Background terminal</div>
+                    <div className="settings-toggle-title">{t("settings.backgroundTerminalTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Run long-running terminal commands in the background.
+                      {t("settings.backgroundTerminalDesc")}
                     </div>
                   </div>
                   <button
@@ -3342,9 +3331,9 @@ export function SettingsView({
                 </div>
                 <div className="settings-toggle-row">
                   <div>
-                    <div className="settings-toggle-title">Steer mode</div>
+                    <div className="settings-toggle-title">{t("settings.steerModeTitle")}</div>
                     <div className="settings-toggle-subtitle">
-                      Send messages immediately. Use Tab to queue while a run is active.
+                      {t("settings.steerModeDesc")}
                     </div>
                   </div>
                   <button

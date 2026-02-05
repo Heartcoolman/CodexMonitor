@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { FileDiff, WorkerPoolContextProvider } from "@pierre/diffs/react";
 import type { FileDiffMetadata } from "@pierre/diffs";
@@ -116,6 +117,7 @@ const DiffCard = memo(function DiffCard({
   isLoading,
   ignoreWhitespaceChanges,
 }: DiffCardProps) {
+  const { t } = useTranslation();
   const diffOptions = useMemo(
     () => ({
       diffStyle,
@@ -151,13 +153,13 @@ const DiffCard = memo(function DiffCard({
 
   const placeholder = useMemo(() => {
     if (isLoading) {
-      return "Loading diff...";
+      return t("diffViewer.loadingDiff");
     }
     if (ignoreWhitespaceChanges && !entry.diff.trim()) {
-      return "No non-whitespace changes.";
+      return t("diffViewer.noWhitespaceChanges");
     }
-    return "Diff unavailable.";
-  }, [entry.diff, ignoreWhitespaceChanges, isLoading]);
+    return t("diffViewer.diffUnavailable");
+  }, [entry.diff, ignoreWhitespaceChanges, isLoading, t]);
 
   return (
       <div
@@ -204,6 +206,7 @@ const PullRequestSummary = memo(function PullRequestSummary({
   pullRequestCommentsLoading,
   pullRequestCommentsError,
 }: PullRequestSummaryProps) {
+  const { t } = useTranslation();
   const prUpdatedLabel = pullRequest.updatedAt
     ? formatRelativeTime(new Date(pullRequest.updatedAt).getTime())
     : null;
@@ -234,7 +237,7 @@ const PullRequestSummary = memo(function PullRequestSummary({
   }, [pullRequest.number]);
 
   return (
-    <section className="diff-viewer-pr" aria-label="Pull request summary">
+    <section className="diff-viewer-pr" aria-label={t("diffViewer.pullRequestSummary")}>
       <div className="diff-viewer-pr-header">
         <div className="diff-viewer-pr-header-row">
           <div className="diff-viewer-pr-title">
@@ -248,7 +251,7 @@ const PullRequestSummary = memo(function PullRequestSummary({
               type="button"
               className="ghost diff-viewer-pr-jump"
               onClick={onJumpToFirstFile}
-              aria-label="Jump to first file"
+              aria-label={t("diffViewer.jumpToFirstFile")}
             >
               <span className="diff-viewer-pr-jump-add">
                 +{diffStats.additions}
@@ -273,7 +276,7 @@ const PullRequestSummary = memo(function PullRequestSummary({
             {pullRequest.baseRefName} ← {pullRequest.headRefName}
           </span>
           {pullRequest.isDraft && (
-            <span className="diff-viewer-pr-pill">Draft</span>
+            <span className="diff-viewer-pr-pill">{t("diffViewer.draft")}</span>
           )}
         </div>
       </div>
@@ -284,15 +287,14 @@ const PullRequestSummary = memo(function PullRequestSummary({
             className="diff-viewer-pr-markdown markdown"
           />
         ) : (
-          <div className="diff-viewer-pr-empty">No description provided.</div>
+          <div className="diff-viewer-pr-empty">{t("diffViewer.noDescription")}</div>
         )}
       </div>
       <div className="diff-viewer-pr-timeline">
         <div className="diff-viewer-pr-timeline-header">
-          <span className="diff-viewer-pr-timeline-title">Activity</span>
+          <span className="diff-viewer-pr-timeline-title">{t("diffViewer.activity")}</span>
           <span className="diff-viewer-pr-timeline-count">
-            {sortedComments.length} comment
-            {sortedComments.length === 1 ? "" : "s"}
+            {t("diffViewer.commentCount", { count: sortedComments.length })}
           </span>
           {hiddenCommentCount > 0 && (
             <button
@@ -300,7 +302,7 @@ const PullRequestSummary = memo(function PullRequestSummary({
               className="ghost diff-viewer-pr-timeline-button"
               onClick={() => setIsTimelineExpanded(true)}
             >
-              Show all
+              {t("diffViewer.showAll")}
             </button>
           )}
           {isTimelineExpanded &&
@@ -310,14 +312,14 @@ const PullRequestSummary = memo(function PullRequestSummary({
                 className="ghost diff-viewer-pr-timeline-button"
                 onClick={() => setIsTimelineExpanded(false)}
               >
-                Collapse
+                {t("diffViewer.collapse")}
               </button>
             )}
         </div>
         <div className="diff-viewer-pr-timeline-list">
           {pullRequestCommentsLoading && (
             <div className="diff-viewer-pr-timeline-state">
-              Loading comments…
+              {t("diffViewer.loadingComments")}
             </div>
           )}
           {pullRequestCommentsError && (
@@ -329,13 +331,12 @@ const PullRequestSummary = memo(function PullRequestSummary({
             !pullRequestCommentsError &&
             !sortedComments.length && (
               <div className="diff-viewer-pr-timeline-state">
-                No comments yet.
+                {t("diffViewer.noCommentsYet")}
               </div>
             )}
           {hiddenCommentCount > 0 && !isTimelineExpanded && (
             <div className="diff-viewer-pr-timeline-divider">
-              {hiddenCommentCount} earlier comment
-              {hiddenCommentCount === 1 ? "" : "s"}
+              {t("diffViewer.earlierCommentCount", { count: hiddenCommentCount })}
             </div>
           )}
           {visibleComments.map((comment) => {
@@ -361,7 +362,7 @@ const PullRequestSummary = memo(function PullRequestSummary({
                     />
                   ) : (
                     <div className="diff-viewer-pr-timeline-text">
-                      No comment body.
+                      {t("diffViewer.noCommentBody")}
                     </div>
                   )}
                 </div>
@@ -388,6 +389,7 @@ export function GitDiffViewer({
   pullRequestCommentsError = null,
   onActivePathChange,
 }: GitDiffViewerProps) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const activePathRef = useRef<string | null>(null);
@@ -625,11 +627,11 @@ export function GitDiffViewer({
         {error && <div className="diff-viewer-empty">{error}</div>}
         {!error && isLoading && diffs.length > 0 && (
           <div className="diff-viewer-loading diff-viewer-loading-overlay">
-            Refreshing diff...
+            {t("diffViewer.refreshingDiff")}
           </div>
         )}
         {!error && !isLoading && !diffs.length && (
-          <div className="diff-viewer-empty">No changes detected.</div>
+          <div className="diff-viewer-empty">{t("diffViewer.noChangesDetected")}</div>
         )}
         {!error && diffs.length > 0 && (
           <div

@@ -1,4 +1,5 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 import Image from "lucide-react/dist/esm/icons/image";
 import X from "lucide-react/dist/esm/icons/x";
 
@@ -7,18 +8,6 @@ type ComposerAttachmentsProps = {
   disabled: boolean;
   onRemoveAttachment?: (path: string) => void;
 };
-
-function fileTitle(path: string) {
-  if (path.startsWith("data:")) {
-    return "Pasted image";
-  }
-  if (path.startsWith("http://") || path.startsWith("https://")) {
-    return "Image";
-  }
-  const normalized = path.replace(/\\/g, "/");
-  const parts = normalized.split("/").filter(Boolean);
-  return parts.length ? parts[parts.length - 1] : path;
-}
 
 function attachmentPreviewSrc(path: string) {
   if (path.startsWith("data:")) {
@@ -39,6 +28,20 @@ export function ComposerAttachments({
   disabled,
   onRemoveAttachment,
 }: ComposerAttachmentsProps) {
+  const { t } = useTranslation();
+
+  const fileTitle = (path: string) => {
+    if (path.startsWith("data:")) {
+      return t("composerAttachments.pastedImage");
+    }
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+      return t("composerAttachments.image");
+    }
+    const normalized = path.replace(/\\/g, "/");
+    const parts = normalized.split("/").filter(Boolean);
+    return parts.length ? parts[parts.length - 1] : path;
+  };
+
   if (attachments.length === 0) {
     return null;
   }
@@ -47,7 +50,7 @@ export function ComposerAttachments({
     <div className="composer-attachments">
       {attachments.map((path) => {
         const title = fileTitle(path);
-        const titleAttr = path.startsWith("data:") ? "Pasted image" : path;
+        const titleAttr = path.startsWith("data:") ? t("composerAttachments.pastedImage") : path;
         const previewSrc = attachmentPreviewSrc(path);
         return (
           <div
@@ -74,7 +77,7 @@ export function ComposerAttachments({
               type="button"
               className="composer-attachment-remove"
               onClick={() => onRemoveAttachment?.(path)}
-              aria-label={`Remove ${title}`}
+              aria-label={t("composerAttachments.removeAttachment", { title })}
               disabled={disabled}
             >
               <X size={12} aria-hidden />

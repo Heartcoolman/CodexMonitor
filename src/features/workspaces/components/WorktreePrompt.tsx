@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type WorktreePromptProps = {
   workspaceName: string;
@@ -31,6 +32,7 @@ export function WorktreePrompt({
   isBusy = false,
   isSavingScript = false,
 }: WorktreePromptProps) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -49,19 +51,19 @@ export function WorktreePrompt({
         }}
       />
       <div className="worktree-modal-card">
-        <div className="worktree-modal-title">New worktree agent</div>
+        <div className="worktree-modal-title">{t("worktree.newWorktreeAgent")}</div>
         <div className="worktree-modal-subtitle">
-          Create a worktree under "{workspaceName}".
+          {t("worktree.createWorktreeUnder", { name: workspaceName })}
         </div>
         <label className="worktree-modal-label" htmlFor="worktree-name">
-          Name
+          {t("common.name")}
         </label>
         <input
           id="worktree-name"
           ref={inputRef}
           className="worktree-modal-input"
           value={name}
-          placeholder="(Optional)"
+          placeholder={t("worktree.optional")}
           onChange={(event) => onNameChange(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
@@ -77,7 +79,7 @@ export function WorktreePrompt({
           }}
         />
         <label className="worktree-modal-label" htmlFor="worktree-branch">
-          Branch name
+          {t("worktree.branchName")}
         </label>
         <input
           id="worktree-branch"
@@ -98,9 +100,9 @@ export function WorktreePrompt({
           }}
         />
         <div className="worktree-modal-divider" />
-        <div className="worktree-modal-section-title">Worktree setup script</div>
+        <div className="worktree-modal-section-title">{t("worktree.worktreeSetupScript")}</div>
         <div className="worktree-modal-hint">
-          Runs once in a dedicated terminal after each new worktree is created.
+          {t("worktree.setupScriptHint")}
         </div>
         <textarea
           id="worktree-setup-script"
@@ -120,7 +122,7 @@ export function WorktreePrompt({
             type="button"
             disabled={isBusy}
           >
-            Cancel
+            {t("common.cancel")}
           </button>
           <button
             className="primary worktree-modal-button"
@@ -128,7 +130,7 @@ export function WorktreePrompt({
             type="button"
             disabled={isBusy || branch.trim().length === 0}
           >
-            Create
+            {t("common.create")}
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import ImageOff from "lucide-react/dist/esm/icons/image-off";
 
 type ImageDiffCardProps = {
@@ -38,6 +39,7 @@ export const ImageDiffCard = memo(function ImageDiffCard({
   newImageMime,
   isSelected,
 }: ImageDiffCardProps) {
+  const { t } = useTranslation();
   const oldDataUri = useMemo(
     () => {
       if (!oldImageData) return null;
@@ -71,7 +73,7 @@ export const ImageDiffCard = memo(function ImageDiffCard({
   const isAdded = status === "A";
   const isDeleted = status === "D";
   const isModified = !isAdded && !isDeleted;
-  const placeholderLabel = "Image preview unavailable.";
+  const placeholderLabel = t("imageDiff.previewUnavailable");
   const renderPlaceholder = () => (
     <div className="image-diff-placeholder">
       <ImageOff className="image-diff-placeholder-icon" aria-hidden />
@@ -97,7 +99,7 @@ export const ImageDiffCard = memo(function ImageDiffCard({
               {oldDataUri ? (
                 <img
                   src={oldDataUri}
-                  alt="Previous version"
+                  alt={t("imageDiff.previousVersion")}
                   className="image-diff-preview"
                 />
               ) : (
@@ -109,7 +111,7 @@ export const ImageDiffCard = memo(function ImageDiffCard({
               {newDataUri ? (
                 <img
                   src={newDataUri}
-                  alt="Current version"
+                  alt={t("imageDiff.currentVersion")}
                   className="image-diff-preview"
                 />
               ) : (
@@ -125,7 +127,7 @@ export const ImageDiffCard = memo(function ImageDiffCard({
               {newDataUri ? (
                 <img
                   src={newDataUri}
-                  alt="New image"
+                  alt={t("imageDiff.newImage")}
                   className="image-diff-preview"
                 />
               ) : (
@@ -141,7 +143,7 @@ export const ImageDiffCard = memo(function ImageDiffCard({
               {oldDataUri ? (
                 <img
                   src={oldDataUri}
-                  alt="Deleted image"
+                  alt={t("imageDiff.deletedImage")}
                   className="image-diff-preview"
                 />
               ) : (

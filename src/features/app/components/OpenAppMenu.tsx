@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down";
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import { openWorkspaceIn } from "../../../services/tauri";
@@ -33,6 +34,7 @@ export function OpenAppMenu({
   onSelectOpenAppId,
   iconById = {},
 }: OpenAppMenuProps) {
+  const { t } = useTranslation();
   const [openMenuOpen, setOpenMenuOpen] = useState(false);
   const openMenuRef = useRef<HTMLDivElement | null>(null);
   const availableTargets =
@@ -81,7 +83,7 @@ export function OpenAppMenu({
   const reportOpenError = (error: unknown, target: OpenTarget) => {
     const message = error instanceof Error ? error.message : String(error);
     pushErrorToast({
-      title: "Couldn’t open workspace",
+      title: t("openAppMenu.couldntOpenWorkspace"),
       message,
     });
     console.warn("Failed to open workspace in target app", {
@@ -171,10 +173,10 @@ export function OpenAppMenu({
 
   const selectedCanOpen = canOpenTarget(selectedOpenTarget);
   const openLabel = selectedCanOpen
-    ? `Open in ${selectedOpenTarget.label}`
+    ? t("openAppMenu.openIn", { app: selectedOpenTarget.label })
     : selectedOpenTarget.target.kind === "command"
-      ? "Set command in Settings"
-      : "Set app name in Settings";
+      ? t("openAppMenu.setCommandInSettings")
+      : t("openAppMenu.setAppNameInSettings");
 
   return (
     <div className="open-app-menu" ref={openMenuRef}>
@@ -185,7 +187,7 @@ export function OpenAppMenu({
           onClick={handleOpen}
           disabled={!selectedCanOpen}
           data-tauri-drag-region="false"
-          aria-label={`Open in ${selectedOpenTarget.label}`}
+          aria-label={t("openAppMenu.openIn", { app: selectedOpenTarget.label })}
           title={openLabel}
         >
           <span className="open-app-label">
@@ -205,8 +207,8 @@ export function OpenAppMenu({
           data-tauri-drag-region="false"
           aria-haspopup="menu"
           aria-expanded={openMenuOpen}
-          aria-label="Select editor"
-          title="Select editor"
+          aria-label={t("openAppMenu.selectEditor")}
+          title={t("openAppMenu.selectEditor")}
         >
           <ChevronDown size={14} aria-hidden />
         </button>

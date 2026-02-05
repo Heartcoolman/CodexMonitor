@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type ClonePromptProps = {
   workspaceName: string;
@@ -29,6 +30,7 @@ export function ClonePrompt({
   onConfirm,
   isBusy = false,
 }: ClonePromptProps) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -51,12 +53,12 @@ export function ClonePrompt({
         }}
       />
       <div className="clone-modal-card">
-        <div className="clone-modal-title">New clone agent</div>
+        <div className="clone-modal-title">{t("clone.newCloneAgent")}</div>
         <div className="clone-modal-subtitle">
-          Create a new working copy of "{workspaceName}".
+          {t("clone.createWorkingCopy", { name: workspaceName })}
         </div>
         <label className="clone-modal-label" htmlFor="clone-copy-name">
-          Copy name
+          {t("clone.copyName")}
         </label>
         <input
           id="clone-copy-name"
@@ -78,14 +80,14 @@ export function ClonePrompt({
           }}
         />
         <label className="clone-modal-label" htmlFor="clone-copies-folder">
-          Copies folder
+          {t("clone.copiesFolder")}
         </label>
         <div className="clone-modal-folder-row">
           <textarea
             id="clone-copies-folder"
             className="clone-modal-input clone-modal-input--path"
             value={copiesFolder}
-            placeholder="Not set"
+            placeholder={t("clone.notSet")}
             readOnly
             rows={1}
             wrap="off"
@@ -115,7 +117,7 @@ export function ClonePrompt({
             onClick={onChooseCopiesFolder}
             disabled={isBusy}
           >
-            Choose…
+            {t("clone.choose")}
           </button>
           <button
             type="button"
@@ -123,12 +125,12 @@ export function ClonePrompt({
             onClick={onClearCopiesFolder}
             disabled={isBusy || copiesFolder.trim().length === 0}
           >
-            Clear
+            {t("common.clear")}
           </button>
         </div>
         {showSuggested && (
           <div className="clone-modal-suggested">
-            <div className="clone-modal-suggested-label">Suggested</div>
+            <div className="clone-modal-suggested-label">{t("clone.suggested")}</div>
             <div className="clone-modal-suggested-row">
               <textarea
                 className="clone-modal-suggested-path clone-modal-input--path"
@@ -136,7 +138,7 @@ export function ClonePrompt({
                 readOnly
                 rows={1}
                 wrap="off"
-                aria-label="Suggested copies folder"
+                aria-label={t("clone.suggestedCopiesFolder")}
                 title={suggestedCopiesFolder ?? ""}
                 onFocus={(event) => {
                   const value = event.currentTarget.value;
@@ -161,7 +163,7 @@ export function ClonePrompt({
                 }}
                 disabled={isBusy || !suggestedCopiesFolder}
               >
-                Copy
+                {t("common.copy")}
               </button>
               <button
                 type="button"
@@ -169,7 +171,7 @@ export function ClonePrompt({
                 onClick={onUseSuggestedCopiesFolder}
                 disabled={isBusy}
               >
-                Use suggested
+                {t("clone.useSuggested")}
               </button>
             </div>
           </div>
@@ -182,7 +184,7 @@ export function ClonePrompt({
             type="button"
             disabled={isBusy}
           >
-            Cancel
+            {t("common.cancel")}
           </button>
           <button
             className="primary clone-modal-button"
@@ -190,7 +192,7 @@ export function ClonePrompt({
             type="button"
             disabled={isBusy || !canCreate}
           >
-            Create
+            {t("common.create")}
           </button>
         </div>
       </div>

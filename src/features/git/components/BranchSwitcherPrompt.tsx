@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { BranchInfo, WorkspaceInfo } from "../../../types";
 import { BranchList } from "./BranchList";
 import { filterBranches } from "../utils/branchSearch";
@@ -43,6 +44,7 @@ export function BranchSwitcherPrompt({
   onSelect,
   onCancel,
 }: BranchSwitcherPromptProps) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const [query, setQuery] = useState("");
@@ -110,7 +112,7 @@ export function BranchSwitcherPrompt({
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Search branches..."
+          placeholder={t("branchSwitcher.searchBranches")}
         />
         <BranchList
           branches={filteredBranches}
@@ -122,7 +124,7 @@ export function BranchSwitcherPrompt({
           selectedItemClassName="selected"
           itemLabelClassName="branch-switcher-modal-item-name"
           emptyClassName="branch-switcher-modal-empty"
-          emptyText="No branches found"
+          emptyText={t("branchSwitcher.noBranchesFound")}
           onSelect={handleSelect}
           onMouseEnter={setSelectedIndex}
           renderMeta={(branch) => {
@@ -136,12 +138,12 @@ export function BranchSwitcherPrompt({
               <span className="branch-switcher-modal-item-meta">
                 {isCurrent && (
                   <span className="branch-switcher-modal-item-current">
-                    current
+                    {t("branchSwitcher.current")}
                   </span>
                 )}
                 {worktree && (
                   <span className="branch-switcher-modal-item-worktree">
-                    worktree
+                    {t("branchSwitcher.worktree")}
                   </span>
                 )}
               </span>
