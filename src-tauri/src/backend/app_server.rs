@@ -84,38 +84,77 @@ impl WorkspaceSession {
 }
 
 pub(crate) fn build_codex_path_env(codex_bin: Option<&str>) -> Option<String> {
+    #[cfg(windows)]
+    const PATH_SEP: char = ';';
+    #[cfg(not(windows))]
+    const PATH_SEP: char = ':';
+
     let mut paths: Vec<String> = env::var("PATH")
         .unwrap_or_default()
-        .split(':')
+        .split(PATH_SEP)
         .filter(|value| !value.is_empty())
         .map(|value| value.to_string())
         .collect();
-    let mut extras = vec![
-        "/opt/homebrew/bin",
-        "/usr/local/bin",
-        "/usr/bin",
-        "/bin",
-        "/usr/sbin",
-        "/sbin",
-    ]
-    .into_iter()
-    .map(|value| value.to_string())
-    .collect::<Vec<String>>();
-    if let Ok(home) = env::var("HOME") {
-        extras.push(format!("{home}/.local/bin"));
-        extras.push(format!("{home}/.local/share/mise/shims"));
-        extras.push(format!("{home}/.cargo/bin"));
-        extras.push(format!("{home}/.bun/bin"));
-        let nvm_root = Path::new(&home).join(".nvm/versions/node");
-        if let Ok(entries) = std::fs::read_dir(nvm_root) {
-            for entry in entries.flatten() {
-                let bin_path = entry.path().join("bin");
-                if bin_path.is_dir() {
-                    extras.push(bin_path.to_string_lossy().to_string());
+
+    let mut extras: Vec<String> = Vec::new();
+
+    #[cfg(not(windows))]
+    {
+        extras.extend([
+            "/opt/homebrew/bin".to_string(),
+            "/usr/local/bin".to_string(),
+            "/usr/bin".to_string(),
+            "/bin".to_string(),
+            "/usr/sbin".to_string(),
+            "/sbin".to_string(),
+        ]);
+        if let Ok(home) = env::var("HOME") {
+            extras.push(format!("{home}/.local/bin"));
+            extras.push(format!("{home}/.local/share/mise/shims"));
+            extras.push(format!("{home}/.cargo/bin"));
+            extras.push(format!("{home}/.bun/bin"));
+            let nvm_root = Path::new(&home).join(".nvm/versions/node");
+            if let Ok(entries) = std::fs::read_dir(nvm_root) {
+                for entry in entries.flatten() {
+                    let bin_path = entry.path().join("bin");
+                    if bin_path.is_dir() {
+                        extras.push(bin_path.to_string_lossy().to_string());
+                    }
                 }
             }
         }
     }
+
+    #[cfg(windows)]
+    {
+        // Windows: add common npm/node installation paths
+        if let Ok(appdata) = env::var("APPDATA") {
+            extras.push(format!("{appdata}\\npm"));
+        }
+        if let Ok(localappdata) = env::var("LOCALAPPDATA") {
+            extras.push(format!("{localappdata}\\Programs\\nodejs"));
+            // fnm (Fast Node Manager) shims
+            extras.push(format!("{localappdata}\\fnm_multishells"));
+        }
+        if let Ok(userprofile) = env::var("USERPROFILE") {
+            extras.push(format!("{userprofile}\\.cargo\\bin"));
+            extras.push(format!("{userprofile}\\.bun\\bin"));
+            // nvm-windows
+            let nvm_root = Path::new(&userprofile).join("AppData\\Roaming\\nvm");
+            if let Ok(entries) = std::fs::read_dir(&nvm_root) {
+                for entry in entries.flatten() {
+                    let path = entry.path();
+                    if path.is_dir() {
+                        extras.push(path.to_string_lossy().to_string());
+                    }
+                }
+            }
+        }
+        if let Ok(programfiles) = env::var("ProgramFiles") {
+            extras.push(format!("{programfiles}\\nodejs"));
+        }
+    }
+
     if let Some(bin_path) = codex_bin.filter(|value| !value.trim().is_empty()) {
         let parent = Path::new(bin_path).parent();
         if let Some(parent) = parent {
@@ -130,7 +169,7 @@ pub(crate) fn build_codex_path_env(codex_bin: Option<&str>) -> Option<String> {
     if paths.is_empty() {
         None
     } else {
-        Some(paths.join(":"))
+        Some(paths.join(&PATH_SEP.to_string()))
     }
 }
 
