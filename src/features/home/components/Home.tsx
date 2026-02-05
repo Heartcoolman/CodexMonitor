@@ -1,4 +1,5 @@
 import RefreshCw from "lucide-react/dist/esm/icons/refresh-cw";
+import { useTranslation } from "react-i18next";
 import type { LocalUsageSnapshot } from "../../../types";
 import { formatRelativeTime } from "../../../utils/time";
 
@@ -52,6 +53,7 @@ export function Home({
   onUsageWorkspaceChange,
   onSelectThread,
 }: HomeProps) {
+  const { t } = useTranslation();
   const formatCompactNumber = (value: number | null | undefined) => {
     if (value === null || value === undefined) {
       return "--";
@@ -176,14 +178,14 @@ export function Home({
   return (
     <div className="home">
       <div className="home-hero">
-        <div className="home-title">Codex Monitor</div>
+        <div className="home-title">{t("home.welcome")}</div>
         <div className="home-subtitle">
-          Orchestrate agents across your local projects.
+          {t("home.chooseProject")}
         </div>
       </div>
       <div className="home-latest">
         <div className="home-latest-header">
-          <div className="home-latest-label">Latest agents</div>
+          <div className="home-latest-label">{t("home.recentActivity")}</div>
         </div>
         {latestAgentRuns.length > 0 ? (
           <div className="home-latest-grid">
@@ -209,7 +211,7 @@ export function Home({
                   {run.message.trim() || "Agent replied."}
                 </div>
                 {run.isProcessing && (
-                  <div className="home-latest-status">Running</div>
+                  <div className="home-latest-status">{t("sidebar.processing")}</div>
                 )}
               </button>
             ))}
@@ -229,9 +231,9 @@ export function Home({
           </div>
         ) : (
           <div className="home-latest-empty">
-            <div className="home-latest-empty-title">No agent activity yet</div>
+            <div className="home-latest-empty-title">{t("home.noRecentActivity")}</div>
             <div className="home-latest-empty-subtitle">
-              Start a thread to see the latest responses here.
+              {t("sidebar.startNewConversation")}
             </div>
           </div>
         )}
@@ -245,7 +247,7 @@ export function Home({
           <span className="home-icon" aria-hidden>
             ⌘
           </span>
-          Open Project
+          {t("home.quickActions")}
         </button>
         <button
           className="home-button secondary"
@@ -255,12 +257,12 @@ export function Home({
           <span className="home-icon" aria-hidden>
             +
           </span>
-          Add Workspace
+          {t("home.addWorkspace")}
         </button>
       </div>
       <div className="home-usage">
         <div className="home-section-header">
-          <div className="home-section-title">Usage snapshot</div>
+          <div className="home-section-title">{t("home.usage")}</div>
           <div className="home-section-meta-row">
             {updatedLabel && <div className="home-section-meta">{updatedLabel}</div>}
             <button
@@ -298,7 +300,7 @@ export function Home({
                 }
                 disabled={usageWorkspaceOptions.length === 0}
               >
-                <option value="">All workspaces</option>
+                <option value="">{t("sidebar.workspaces")}</option>
                 {usageWorkspaceOptions.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}

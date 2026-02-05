@@ -1,5 +1,6 @@
 import FolderPlus from "lucide-react/dist/esm/icons/folder-plus";
 import Search from "lucide-react/dist/esm/icons/search";
+import { useTranslation } from "react-i18next";
 
 type SidebarHeaderProps = {
   onSelectHome: () => void;
@@ -14,6 +15,7 @@ export function SidebarHeader({
   onToggleSearch,
   isSearchOpen,
 }: SidebarHeaderProps) {
+  const { t } = useTranslation();
   return (
     <div className="sidebar-header">
       <div className="sidebar-header-title">
@@ -22,7 +24,7 @@ export function SidebarHeader({
             className="sidebar-title-add"
             onClick={onAddWorkspace}
             data-tauri-drag-region="false"
-            aria-label="Add workspace"
+            aria-label={t("sidebar.addWorkspace")}
             type="button"
           >
             <FolderPlus aria-hidden />
@@ -31,9 +33,9 @@ export function SidebarHeader({
             className="subtitle subtitle-button sidebar-title-button"
             onClick={onSelectHome}
             data-tauri-drag-region="false"
-            aria-label="Open home"
+            aria-label={t("sidebar.openHome")}
           >
-            Projects
+            {t("settings.projects")}
           </button>
         </div>
       </div>
@@ -42,7 +44,7 @@ export function SidebarHeader({
           className={`ghost sidebar-search-toggle${isSearchOpen ? " is-active" : ""}`}
           onClick={onToggleSearch}
           data-tauri-drag-region="false"
-          aria-label="Toggle search"
+          aria-label={t("sidebar.toggleSearch")}
           aria-pressed={isSearchOpen}
           type="button"
         >

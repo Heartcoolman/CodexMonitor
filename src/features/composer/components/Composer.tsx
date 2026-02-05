@@ -7,6 +7,7 @@ import {
   type CSSProperties,
   type ClipboardEvent,
 } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   AppOption,
   ComposerEditorSettings,
@@ -161,7 +162,7 @@ export function Composer({
   queuedMessages = [],
   onEditQueued,
   onDeleteQueued,
-  sendLabel = "Send",
+  sendLabel: sendLabelProp,
   draftText = "",
   onDraftChange,
   historyKey = null,
@@ -209,6 +210,8 @@ export function Composer({
   onReviewPromptConfirmCustom,
   onFileAutocompleteActiveChange,
 }: ComposerProps) {
+  const { t } = useTranslation();
+  const sendLabel = sendLabelProp ?? t("composer.send");
   const [text, setText] = useState(draftText);
   const [selectionStart, setSelectionStart] = useState<number | null>(null);
   const [suggestionsStyle, setSuggestionsStyle] = useState<
