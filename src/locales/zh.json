@@ -159,7 +159,10 @@
     "unread": "未读",
     "reviewing": "审核中",
     "openSettings": "打开设置",
-    "openDebugLog": "打开调试日志"
+    "openDebugLog": "打开调试日志",
+    "resetsIn": "{{time}}后重置",
+    "creditsUnlimited": "额度：无限",
+    "creditsCount": "额度：{{count}} 积分"
   },
   "settings": {
     "title": "设置",
@@ -815,7 +818,45 @@
     "deleted": "已删除",
     "renamed": "已重命名",
     "copied": "已复制",
-    "unmerged": "未合并"
+    "unmerged": "未合并",
+    "noMessage": "无消息",
+    "unknown": "未知",
+    "openOnGitHub": "在 GitHub 上打开",
+    "noUpstreamConfigured": "未配置上游",
+    "upstream": "上游",
+    "diff": "差异",
+    "log": "日志",
+    "issues": "议题",
+    "prs": "拉取请求",
+    "path": "路径：",
+    "change": "更改",
+    "chooseRepo": "为此工作区选择一个仓库。",
+    "depth": "深度",
+    "pickFolder": "选择文件夹",
+    "scanningRepos": "正在扫描仓库...",
+    "noReposFound": "未找到仓库。",
+    "active": "活跃",
+    "pulling": "拉取中...",
+    "sync": "同步（先拉取后推送）",
+    "syncing": "同步中...",
+    "noChangesDetected": "未检测到更改。",
+    "noCommitsYet": "暂无提交。",
+    "toPush": "待推送",
+    "toPull": "待拉取",
+    "noOpenIssues": "无待处理议题。",
+    "noOpenPRs": "无待处理拉取请求。",
+    "draft": "草稿",
+    "commitMessagePlaceholder": "提交消息...",
+    "dismissError": "关闭错误",
+    "stageAll": "暂存所有更改",
+    "unstageAll": "取消暂存所有",
+    "discardAll": "放弃所有更改",
+    "gitPanelView": "Git 面板视图",
+    "applyWorktreeChanges": "应用工作树更改",
+    "fetchRemote": "获取远程",
+    "generateCommitMessage": "生成提交消息",
+    "remoteAheadWarning": "远程领先。请先拉取或使用同步。",
+    "pullAndPushTooltip": "拉取最新更改并推送本地提交"
   },
   "files": {
     "title": "文件",
@@ -937,7 +978,27 @@
     "usage": "使用量",
     "usageThisWeek": "本周使用量",
     "creditsRemaining": "剩余额度",
-    "unlimited": "无限制"
+    "unlimited": "无限制",
+    "workspace": "工作区",
+    "view": "视图",
+    "usageView": "用量视图",
+    "tokens": "令牌数",
+    "time": "时间",
+    "noUsageDataYet": "暂无用量数据",
+    "runCodexSession": "运行 Codex 会话以开始跟踪本地用量。",
+    "last7Days": "最近 7 天",
+    "last30Days": "最近 30 天",
+    "tokensSuffix": "令牌",
+    "agentTimeSuffix": "代理时间",
+    "runsSuffix": "次运行",
+    "avgPerDay": "平均 {{value}} / 天",
+    "total": "共计 {{value}}",
+    "cacheHitRate": "缓存命中率",
+    "peakDay": "峰值日",
+    "runs": "运行次数",
+    "topModels": "热门模型",
+    "tokensHint": "令牌数",
+    "noModelsYet": "暂无模型"
   },
   "update": {
     "title": "更新",
@@ -1164,6 +1225,25 @@
   "errorToasts": {
     "dismissError": "关闭错误",
     "dismiss": "关闭"
+  },
+  "mainHeader": {
+    "updateUpstreamConfirm": "是否要将上游分支更新为 {{branch}}？",
+    "updateUpstream": "更新上游",
+    "openWorktreeTerminal": "在终端中打开此工作树。",
+    "toggleTerminal": "切换终端面板",
+    "copyThread": "复制对话"
+  },
+  "layout": {
+    "noWorkspaceSelected": "未选择工作区",
+    "chooseProjectChat": "选择一个项目开始聊天。",
+    "selectProjectDiffs": "选择一个项目查看差异。",
+    "hideThreadsSidebar": "隐藏对话侧边栏",
+    "showThreadsSidebar": "显示对话侧边栏",
+    "hideGitSidebar": "隐藏 Git 侧边栏",
+    "showGitSidebar": "显示 Git 侧边栏"
+  },
+  "messages": {
+    "copyCodeBlock": "复制代码块"
   },
   "branchSwitcher": {
     "searchBranches": "搜索分支...",

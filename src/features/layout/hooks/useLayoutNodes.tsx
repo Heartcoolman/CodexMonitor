@@ -1,4 +1,5 @@
 import type { DragEvent, MouseEvent, ReactNode, RefObject } from "react";
+import { useTranslation } from "react-i18next";
 import ArrowLeft from "lucide-react/dist/esm/icons/arrow-left";
 import { Sidebar } from "../../app/components/Sidebar";
 import { Home } from "../../home/components/Home";
@@ -466,6 +467,7 @@ type LayoutNodesResult = {
 };
 
 export function useLayoutNodes(options: LayoutNodesOptions): LayoutNodesResult {
+  const { t } = useTranslation();
   const activeThreadStatus = options.activeThreadId
     ? options.threadStatusById[options.activeThreadId] ?? null
     : null;
@@ -927,8 +929,8 @@ export function useLayoutNodes(options: LayoutNodesOptions): LayoutNodesResult {
 
   const compactEmptyCodexNode = (
     <div className="compact-empty">
-      <h3>No workspace selected</h3>
-      <p>Choose a project to start chatting.</p>
+      <h3>{t("layout.noWorkspaceSelected")}</h3>
+      <p>{t("layout.chooseProjectChat")}</p>
       <button className="ghost" onClick={options.onGoProjects}>
         Go to Projects
       </button>
@@ -937,8 +939,8 @@ export function useLayoutNodes(options: LayoutNodesOptions): LayoutNodesResult {
 
   const compactEmptyGitNode = (
     <div className="compact-empty">
-      <h3>No workspace selected</h3>
-      <p>Select a project to inspect diffs.</p>
+      <h3>{t("layout.noWorkspaceSelected")}</h3>
+      <p>{t("layout.selectProjectDiffs")}</p>
       <button className="ghost" onClick={options.onGoProjects}>
         Go to Projects
       </button>
@@ -947,8 +949,8 @@ export function useLayoutNodes(options: LayoutNodesOptions): LayoutNodesResult {
 
   const compactGitBackNode = (
     <div className="compact-git-back">
-      <button onClick={options.onBackFromDiff}>‹ Back</button>
-      <span className="workspace-title">Diff</span>
+      <button onClick={options.onBackFromDiff}>{t("common.back")}</button>
+      <span className="workspace-title">{t("git.diff")}</span>
     </div>
   );
 

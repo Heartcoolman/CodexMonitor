@@ -159,7 +159,10 @@
     "unread": "Unread",
     "reviewing": "Reviewing",
     "openSettings": "Open settings",
-    "openDebugLog": "Open debug log"
+    "openDebugLog": "Open debug log",
+    "resetsIn": "Resets {{time}}",
+    "creditsUnlimited": "Credits: Unlimited",
+    "creditsCount": "Credits: {{count}} credits"
   },
   "settings": {
     "title": "Settings",
@@ -815,7 +818,45 @@
     "deleted": "Deleted",
     "renamed": "Renamed",
     "copied": "Copied",
-    "unmerged": "Unmerged"
+    "unmerged": "Unmerged",
+    "noMessage": "No message",
+    "unknown": "Unknown",
+    "openOnGitHub": "Open on GitHub",
+    "noUpstreamConfigured": "No upstream configured",
+    "upstream": "Upstream",
+    "diff": "Diff",
+    "log": "Log",
+    "issues": "Issues",
+    "prs": "PRs",
+    "path": "Path:",
+    "change": "Change",
+    "chooseRepo": "Choose a repo for this workspace.",
+    "depth": "Depth",
+    "pickFolder": "Pick folder",
+    "scanningRepos": "Scanning for repositories...",
+    "noReposFound": "No repositories found.",
+    "active": "Active",
+    "pulling": "Pulling...",
+    "sync": "Sync (pull then push)",
+    "syncing": "Syncing...",
+    "noChangesDetected": "No changes detected.",
+    "noCommitsYet": "No commits yet.",
+    "toPush": "To push",
+    "toPull": "To pull",
+    "noOpenIssues": "No open issues.",
+    "noOpenPRs": "No open pull requests.",
+    "draft": "Draft",
+    "commitMessagePlaceholder": "Commit message...",
+    "dismissError": "Dismiss error",
+    "stageAll": "Stage all changes",
+    "unstageAll": "Unstage all changes",
+    "discardAll": "Discard all changes",
+    "gitPanelView": "Git panel view",
+    "applyWorktreeChanges": "Apply worktree changes",
+    "fetchRemote": "Fetch remote",
+    "generateCommitMessage": "Generate commit message",
+    "remoteAheadWarning": "Remote is ahead. Pull first, or use Sync.",
+    "pullAndPushTooltip": "Pull latest changes and push your local commits"
   },
   "files": {
     "title": "Files",
@@ -937,7 +978,27 @@
     "usage": "Usage",
     "usageThisWeek": "Usage this week",
     "creditsRemaining": "Credits remaining",
-    "unlimited": "Unlimited"
+    "unlimited": "Unlimited",
+    "workspace": "Workspace",
+    "view": "View",
+    "usageView": "Usage view",
+    "tokens": "Tokens",
+    "time": "Time",
+    "noUsageDataYet": "No usage data yet",
+    "runCodexSession": "Run a Codex session to start tracking local usage.",
+    "last7Days": "Last 7 days",
+    "last30Days": "Last 30 days",
+    "tokensSuffix": "tokens",
+    "agentTimeSuffix": "agent time",
+    "runsSuffix": "runs",
+    "avgPerDay": "Avg {{value}} / day",
+    "total": "Total {{value}}",
+    "cacheHitRate": "Cache hit rate",
+    "peakDay": "Peak day",
+    "runs": "Runs",
+    "topModels": "Top models",
+    "tokensHint": "Tokens",
+    "noModelsYet": "No models yet"
   },
   "update": {
     "title": "Update",
@@ -1164,6 +1225,25 @@
   "errorToasts": {
     "dismissError": "Dismiss error",
     "dismiss": "Dismiss"
+  },
+  "mainHeader": {
+    "updateUpstreamConfirm": "Do you want to update the upstream branch to {{branch}}?",
+    "updateUpstream": "Update upstream",
+    "openWorktreeTerminal": "Open this worktree in your terminal.",
+    "toggleTerminal": "Toggle terminal panel",
+    "copyThread": "Copy thread"
+  },
+  "layout": {
+    "noWorkspaceSelected": "No workspace selected",
+    "chooseProjectChat": "Choose a project to start chatting.",
+    "selectProjectDiffs": "Select a project to inspect diffs.",
+    "hideThreadsSidebar": "Hide threads sidebar",
+    "showThreadsSidebar": "Show threads sidebar",
+    "hideGitSidebar": "Hide git sidebar",
+    "showGitSidebar": "Show git sidebar"
+  },
+  "messages": {
+    "copyCodeBlock": "Copy code block"
   },
   "branchSwitcher": {
     "searchBranches": "Search branches...",

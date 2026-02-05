@@ -285,8 +285,7 @@ export function MainHeader({
                       {worktreeRename.upstream && (
                         <div className="worktree-info-upstream">
                           <span className="worktree-info-subtle">
-                            Do you want to update the upstream branch to{" "}
-                            <strong>{worktreeRename.upstream.newBranch}</strong>?
+                            {t("mainHeader.updateUpstreamConfirm", { branch: worktreeRename.upstream.newBranch })}
                           </span>
                           <button
                             type="button"
@@ -294,7 +293,7 @@ export function MainHeader({
                             onClick={worktreeRename.upstream.onConfirm}
                             disabled={worktreeRename.upstream.isSubmitting}
                           >
-                            Update upstream
+                            {t("mainHeader.updateUpstream")}
                           </button>
                           {worktreeRename.upstream.error && (
                             <div className="worktree-info-error">
@@ -328,7 +327,7 @@ export function MainHeader({
                       </button>
                     </div>
                     <span className="worktree-info-subtle">
-                      Open this worktree in your terminal.
+                      {t("mainHeader.openWorktreeTerminal")}
                     </span>
                   </div>
                   <div className="worktree-info-row">
@@ -415,7 +414,7 @@ export function MainHeader({
                         className="branch-input"
                         autoFocus
                         data-tauri-drag-region="false"
-                        aria-label="Search branches"
+                        aria-label={t("branchSwitcher.searchBranches")}
                       />
                       <button
                         type="button"
@@ -552,7 +551,7 @@ export function MainHeader({
             className={`ghost main-header-action${isTerminalOpen ? " is-active" : ""}`}
             onClick={onToggleTerminal}
             data-tauri-drag-region="false"
-            aria-label="Toggle terminal panel"
+            aria-label={t("mainHeader.toggleTerminal")}
             title={t("terminal.title")}
           >
             <Terminal size={14} aria-hidden />
@@ -564,8 +563,8 @@ export function MainHeader({
           onClick={handleCopyClick}
           disabled={!canCopyThread || !onCopyThread}
           data-tauri-drag-region="false"
-          aria-label="Copy thread"
-          title="Copy thread"
+          aria-label={t("mainHeader.copyThread")}
+          title={t("mainHeader.copyThread")}
         >
           <span className="main-header-icon" aria-hidden>
             <Copy className="main-header-icon-copy" size={14} />

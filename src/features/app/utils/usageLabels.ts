@@ -1,5 +1,6 @@
 import type { RateLimitSnapshot } from "../../../types";
 import { formatRelativeTime } from "../../../utils/time";
+import type { TFunction } from "i18next";
 
 type UsageLabels = {
   sessionPercent: number | null;
@@ -13,22 +14,22 @@ type UsageLabels = {
 const clampPercent = (value: number) =>
   Math.min(Math.max(Math.round(value), 0), 100);
 
-function formatResetLabel(resetsAt?: number | null) {
+function formatResetLabel(t: TFunction, resetsAt?: number | null) {
   if (typeof resetsAt !== "number" || !Number.isFinite(resetsAt)) {
     return null;
   }
   const resetMs = resetsAt > 1_000_000_000_000 ? resetsAt : resetsAt * 1000;
   const relative = formatRelativeTime(resetMs).replace(/^in\s+/i, "");
-  return `Resets ${relative}`;
+  return t("sidebar.resetsIn", { time: relative });
 }
 
-function formatCreditsLabel(accountRateLimits: RateLimitSnapshot | null) {
+function formatCreditsLabel(t: TFunction, accountRateLimits: RateLimitSnapshot | null) {
   const credits = accountRateLimits?.credits ?? null;
   if (!credits?.hasCredits) {
     return null;
   }
   if (credits.unlimited) {
-    return "Credits: Unlimited";
+    return t("sidebar.creditsUnlimited");
   }
   const balance = credits.balance?.trim() ?? "";
   if (!balance) {
@@ -36,17 +37,18 @@ function formatCreditsLabel(accountRateLimits: RateLimitSnapshot | null) {
   }
   const intValue = Number.parseInt(balance, 10);
   if (Number.isFinite(intValue) && intValue > 0) {
-    return `Credits: ${intValue} credits`;
+    return t("sidebar.creditsCount", { count: intValue });
   }
   const floatValue = Number.parseFloat(balance);
   if (Number.isFinite(floatValue) && floatValue > 0) {
     const rounded = Math.round(floatValue);
-    return rounded > 0 ? `Credits: ${rounded} credits` : null;
+    return rounded > 0 ? t("sidebar.creditsCount", { count: rounded }) : null;
   }
   return null;
 }
 
 export function getUsageLabels(
+  t: TFunction,
   accountRateLimits: RateLimitSnapshot | null,
   showRemaining: boolean,
 ): UsageLabels {
@@ -68,9 +70,9 @@ export function getUsageLabels(
   return {
     sessionPercent,
     weeklyPercent,
-    sessionResetLabel: formatResetLabel(accountRateLimits?.primary?.resetsAt),
-    weeklyResetLabel: formatResetLabel(accountRateLimits?.secondary?.resetsAt),
-    creditsLabel: formatCreditsLabel(accountRateLimits),
+    sessionResetLabel: formatResetLabel(t, accountRateLimits?.primary?.resetsAt),
+    weeklyResetLabel: formatResetLabel(t, accountRateLimits?.secondary?.resetsAt),
+    creditsLabel: formatCreditsLabel(t, accountRateLimits),
     showWeekly: Boolean(accountRateLimits?.secondary),
   };
 }
