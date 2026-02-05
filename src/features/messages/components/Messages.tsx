@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 import Brain from "lucide-react/dist/esm/icons/brain";
 import Check from "lucide-react/dist/esm/icons/check";
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down";
@@ -179,10 +180,6 @@ function toolNameFromTitle(title: string) {
   return segments.length ? segments[segments.length - 1] : "";
 }
 
-function formatCount(value: number, singular: string, plural: string) {
-  return `${value} ${value === 1 ? singular : plural}`;
-}
-
 function sanitizeReasoningTitle(title: string) {
   return title
     .replace(/[`*_~]/g, "")
@@ -290,6 +287,7 @@ const ImageLightbox = memo(function ImageLightbox({
   activeIndex: number;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const activeImage = images[activeIndex];
 
   useEffect(() => {
@@ -331,7 +329,7 @@ const ImageLightbox = memo(function ImageLightbox({
           type="button"
           className="message-image-lightbox-close"
           onClick={onClose}
-          aria-label="Close image preview"
+          aria-label={t("threads.closeImagePreview")}
         >
           <X size={16} aria-hidden />
         </button>
@@ -627,6 +625,7 @@ const WorkingIndicator = memo(function WorkingIndicator({
   hasItems,
   reasoningLabel = null,
 }: WorkingIndicatorProps) {
+  const { t } = useTranslation();
   const [elapsedMs, setElapsedMs] = useState(0);
 
   useEffect(() => {
@@ -649,14 +648,14 @@ const WorkingIndicator = memo(function WorkingIndicator({
           <div className="working-timer">
             <span className="working-timer-clock">{formatDurationMs(elapsedMs)}</span>
           </div>
-          <span className="working-text">{reasoningLabel || "Working…"}</span>
+          <span className="working-text">{reasoningLabel || t("threads.working")}</span>
         </div>
       )}
       {!isThinking && lastDurationMs !== null && hasItems && (
         <div className="turn-complete" aria-live="polite">
           <span className="turn-complete-line" aria-hidden />
           <span className="turn-complete-label">
-            Done in {formatDurationMs(lastDurationMs)}
+            {t("threads.doneIn", { time: formatDurationMs(lastDurationMs) })}
           </span>
           <span className="turn-complete-line" aria-hidden />
         </div>
@@ -674,6 +673,7 @@ const MessageRow = memo(function MessageRow({
   onOpenFileLinkMenu,
   onOpenThreadLink,
 }: MessageRowProps) {
+  const { t } = useTranslation();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const hasText = item.text.trim().length > 0;
   const imageItems = useMemo(() => {
@@ -723,8 +723,8 @@ const MessageRow = memo(function MessageRow({
           type="button"
           className={`ghost message-copy-button${isCopied ? " is-copied" : ""}`}
           onClick={() => onCopy(item)}
-          aria-label="Copy message"
-          title="Copy message"
+          aria-label={t("threads.copyMessage")}
+          title={t("threads.copyMessage")}
         >
           <span className="message-copy-icon" aria-hidden>
             <Copy className="message-copy-icon-copy" size={14} />
@@ -745,6 +745,7 @@ const ReasoningRow = memo(function ReasoningRow({
   onOpenFileLinkMenu,
   onOpenThreadLink,
 }: ReasoningRowProps) {
+  const { t } = useTranslation();
   const { summaryTitle, bodyText, hasBody } = parsed;
   const reasoningTone: StatusTone = hasBody ? "completed" : "processing";
   return (
@@ -754,7 +755,7 @@ const ReasoningRow = memo(function ReasoningRow({
         className="tool-inline-bar-toggle"
         onClick={() => onToggle(item.id)}
         aria-expanded={isExpanded}
-        aria-label="Toggle reasoning details"
+        aria-label={t("threads.toggleReasoningDetails")}
       />
       <div className="tool-inline-content">
         <button
@@ -792,7 +793,8 @@ const ReviewRow = memo(function ReviewRow({
   onOpenFileLinkMenu,
   onOpenThreadLink,
 }: ReviewRowProps) {
-  const title = item.state === "started" ? "Review started" : "Review completed";
+  const { t } = useTranslation();
+  const title = item.state === "started" ? t("threads.reviewStarted") : t("threads.reviewCompleted");
   return (
     <div className="item-card review">
       <div className="review-header">
@@ -800,7 +802,7 @@ const ReviewRow = memo(function ReviewRow({
         <span
           className={`review-badge ${item.state === "started" ? "active" : "done"}`}
         >
-          Review
+          {t("threads.review")}
         </span>
       </div>
       {item.text && (
@@ -839,6 +841,7 @@ const ToolRow = memo(function ToolRow({
   onOpenThreadLink,
   onRequestAutoScroll,
 }: ToolRowProps) {
+  const { t } = useTranslation();
   const isFileChange = item.toolType === "fileChange";
   const isCommand = item.toolType === "commandExecution";
   const commandText = isCommand
@@ -853,8 +856,8 @@ const ToolRow = memo(function ToolRow({
   const ToolIcon = toolIconForSummary(item, summary);
   const summaryLabel = isFileChange
     ? changeNames.length > 1
-      ? "files edited"
-      : "file edited"
+      ? t("threads.filesEdited")
+      : t("threads.fileEdited")
     : isCommand
       ? ""
       : summary.label;
@@ -903,7 +906,7 @@ const ToolRow = memo(function ToolRow({
         className="tool-inline-bar-toggle"
         onClick={() => onToggle(item.id)}
         aria-expanded={isExpanded}
-        aria-label="Toggle tool details"
+        aria-label={t("threads.toggleToolDetails")}
       />
       <div className="tool-inline-content">
         <button
@@ -941,7 +944,7 @@ const ToolRow = memo(function ToolRow({
         )}
         {isExpanded && isCommand && item.detail && (
           <div className="tool-inline-detail tool-inline-muted">
-            cwd: {item.detail}
+            {t("threads.cwd")}: {item.detail}
           </div>
         )}
         {isExpanded && isFileChange && hasChanges && (
@@ -1062,7 +1065,8 @@ function exploreKindLabel(kind: ExploreRowProps["item"]["entries"][number]["kind
 }
 
 const ExploreRow = memo(function ExploreRow({ item }: ExploreRowProps) {
-  const title = item.status === "exploring" ? "Exploring" : "Explored";
+  const { t } = useTranslation();
+  const title = item.status === "exploring" ? t("threads.exploring") : t("threads.explored");
   return (
     <div className="tool-inline explore-inline">
       <div className="tool-inline-bar-toggle" aria-hidden />
@@ -1109,6 +1113,7 @@ export const Messages = memo(function Messages({
   onUserInputSubmit,
   onOpenThreadLink,
 }: MessagesProps) {
+  const { t } = useTranslation();
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef(true);
@@ -1370,10 +1375,10 @@ export const Messages = memo(function Messages({
           const { group } = entry;
           const isCollapsed = collapsedToolGroups.has(group.id);
           const summaryParts = [
-            formatCount(group.toolCount, "tool call", "tool calls"),
+            t("threads.toolCalls", { count: group.toolCount }),
           ];
           if (group.messageCount > 0) {
-            summaryParts.push(formatCount(group.messageCount, "message", "messages"));
+            summaryParts.push(t("threads.messages", { count: group.messageCount }));
           }
           const summaryText = summaryParts.join(", ");
           const groupBodyId = `tool-group-${group.id}`;
@@ -1390,7 +1395,7 @@ export const Messages = memo(function Messages({
                   onClick={() => toggleToolGroup(group.id)}
                   aria-expanded={!isCollapsed}
                   aria-controls={groupBodyId}
-                  aria-label={isCollapsed ? "Expand tool calls" : "Collapse tool calls"}
+                  aria-label={isCollapsed ? t("threads.expandToolCalls") : t("threads.collapseToolCalls")}
                 >
                   <span className="tool-group-chevron" aria-hidden>
                     <ChevronIcon size={14} />
@@ -1418,14 +1423,14 @@ export const Messages = memo(function Messages({
       />
       {!items.length && !userInputNode && !isThinking && !isLoadingMessages && (
         <div className="empty messages-empty">
-          {threadId ? "Send a prompt to the agent." : "Send a prompt to start a new agent."}
+          {threadId ? t("threads.sendPromptToAgent") : t("threads.sendPromptToStartAgent")}
         </div>
       )}
       {!items.length && !userInputNode && !isThinking && isLoadingMessages && (
         <div className="empty messages-empty">
           <div className="messages-loading-indicator" role="status" aria-live="polite">
             <span className="working-spinner" aria-hidden />
-            <span className="messages-loading-label">Loading…</span>
+            <span className="messages-loading-label">{t("common.loading")}</span>
           </div>
         </div>
       )}

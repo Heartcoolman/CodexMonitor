@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { Menu, MenuItem } from "@tauri-apps/api/menu";
@@ -169,6 +170,7 @@ export function FileTreePanel({
   selectedOpenAppId,
   onSelectOpenAppId,
 }: FileTreePanelProps) {
+  const { t } = useTranslation();
   const [filterMode, setFilterMode] = useState<"all" | "modified">("all");
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState("");
@@ -553,7 +555,7 @@ export function FileTreePanel({
       const menu = await Menu.new({
         items: [
           await MenuItem.new({
-            text: "Add to chat",
+            text: t("composer.attachFile"),
             enabled: canInsertText,
             action: async () => {
               if (!canInsertText) {
@@ -563,7 +565,7 @@ export function FileTreePanel({
             },
           }),
           await MenuItem.new({
-            text: "Reveal in Finder",
+            text: t("files.revealInFinder"),
             action: async () => {
               await revealItemInDir(resolvePath(relativePath));
             },
@@ -634,7 +636,7 @@ export function FileTreePanel({
             }}
             disabled={!canInsertText}
             aria-label={`Mention ${node.name}`}
-            title="Mention in chat"
+            title={t("composer.attachFile")}
           >
             <Plus size={10} aria-hidden />
           </button>
@@ -656,10 +658,10 @@ export function FileTreePanel({
                 ? `${visibleEntries.length} modified`
                 : `${visibleEntries.length} file${visibleEntries.length === 1 ? "" : "s"}`
             : showLoading
-              ? "Loading files"
+              ? t("common.loading")
               : filterMode === "modified"
-                ? "No modified"
-                : "No files"}
+                ? t("files.noFiles")
+                : t("files.noFiles")}
           </div>
           {hasFolders ? (
             <button
@@ -679,7 +681,7 @@ export function FileTreePanel({
         <input
           className="file-tree-search-input"
           type="search"
-          placeholder="Filter files and folders"
+          placeholder={t("files.search")}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           aria-label="Filter files and folders"
@@ -722,7 +724,7 @@ export function FileTreePanel({
                 : "No matches found."
               : filterMode === "modified"
                 ? "No modified files."
-                : "No files available."}
+                : t("files.noFiles")}
           </div>
         ) : (
           <div

@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { FolderOpen } from "lucide-react";
 import X from "lucide-react/dist/esm/icons/x";
+import { useTranslation } from "react-i18next";
 import { SidebarCornerActions } from "./SidebarCornerActions";
 import { SidebarFooter } from "./SidebarFooter";
 import { SidebarHeader } from "./SidebarHeader";
@@ -144,6 +145,7 @@ export function Sidebar({
   onWorkspaceDragLeave,
   onWorkspaceDrop,
 }: SidebarProps) {
+  const { t } = useTranslation();
   const [expandedWorkspaces, setExpandedWorkspaces] = useState(
     new Set<string>(),
   );
@@ -229,9 +231,9 @@ export function Sidebar({
   const accountButtonLabel = accountEmail
     ? accountEmail
     : accountInfo?.type === "apikey"
-      ? "API key"
-      : "Sign in to Codex";
-  const accountActionLabel = accountEmail ? "Switch account" : "Sign in";
+      ? t("sidebar.apiKey")
+      : t("sidebar.signInToCodex");
+  const accountActionLabel = accountEmail ? t("sidebar.switchAccount") : t("sidebar.signIn");
   const showAccountSwitcher = Boolean(activeWorkspaceId);
   const accountSwitchDisabled = accountSwitching || !activeWorkspaceId;
   const accountCancelDisabled = !accountSwitching || !activeWorkspaceId;
@@ -407,8 +409,8 @@ export function Sidebar({
             className="sidebar-search-input"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Search projects"
-            aria-label="Search projects"
+            placeholder={t("sidebar.searchProjects")}
+            aria-label={t("sidebar.searchProjects")}
             data-tauri-drag-region="false"
             autoFocus
           />
@@ -418,7 +420,7 @@ export function Sidebar({
             type="button"
             className="sidebar-search-clear"
             onClick={() => setSearchQuery("")}
-            aria-label="Clear search"
+            aria-label={t("sidebar.clearSearch")}
             data-tauri-drag-region="false"
           >
             <X size={12} aria-hidden />
@@ -439,7 +441,7 @@ export function Sidebar({
           {workspaceDropText === "Drop Project Here" && (
             <FolderOpen className="workspace-drop-overlay-icon" aria-hidden />
           )}
-          {workspaceDropText}
+          {workspaceDropText === "Drop Project Here" ? t("sidebar.dropProjectHere") : workspaceDropText === "Adding Project..." ? t("sidebar.addingProject") : workspaceDropText}
         </div>
       </div>
       <div
@@ -453,7 +455,7 @@ export function Sidebar({
           {pinnedThreadRows.length > 0 && (
             <div className="pinned-section">
               <div className="workspace-group-header">
-                <div className="workspace-group-label">Pinned</div>
+                <div className="workspace-group-label">{t("sidebar.pinnedThreads")}</div>
               </div>
               <PinnedThreadList
                 rows={pinnedThreadRows}
@@ -552,7 +554,7 @@ export function Sidebar({
                                 onAddAgent(entry);
                               }}
                             >
-                              New agent
+                              {t("sidebar.newAgent")}
                             </button>
                             <button
                               className="workspace-add-option"
@@ -562,7 +564,7 @@ export function Sidebar({
                                 onAddWorktreeAgent(entry);
                               }}
                             >
-                              New worktree agent
+                              {t("sidebar.newWorktreeAgent")}
                             </button>
                             <button
                               className="workspace-add-option"
@@ -572,7 +574,7 @@ export function Sidebar({
                                 onAddCloneAgent(entry);
                               }}
                             >
-                              New clone agent
+                              {t("sidebar.newCloneAgent")}
                             </button>
                           </div>,
                           document.body,
@@ -593,7 +595,7 @@ export function Sidebar({
                           }}
                         >
                           <span className={`thread-status ${draftStatusClass}`} aria-hidden />
-                          <span className="thread-name">New Agent</span>
+                          <span className="thread-name">{t("sidebar.newAgent")}</span>
                         </div>
                       )}
                       {worktrees.length > 0 && (
@@ -652,8 +654,8 @@ export function Sidebar({
           {!filteredGroupedWorkspaces.length && (
             <div className="empty">
               {isSearchActive
-                ? "No projects match your search."
-                : "Add a workspace to start."}
+                ? t("sidebar.noProjectsMatch")
+                : t("sidebar.addWorkspaceToStart")}
             </div>
           )}
         </div>

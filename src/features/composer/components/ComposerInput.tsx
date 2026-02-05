@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   ChangeEvent,
   ClipboardEvent,
@@ -184,6 +185,7 @@ export function ComposerInput({
   onReviewPromptUpdateCustomInstructions,
   onReviewPromptConfirmCustom,
 }: ComposerInputProps) {
+  const { t } = useTranslation();
   const suggestionListRef = useRef<HTMLDivElement | null>(null);
   const suggestionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const minTextareaHeight = isExpanded ? 180 : 60;
@@ -328,8 +330,8 @@ export function ComposerInput({
             className="composer-attach"
             onClick={onAddAttachment}
             disabled={disabled || !onAddAttachment}
-            aria-label="Add image"
-            title="Add image"
+            aria-label={t("composer.attachImage")}
+            title={t("composer.attachImage")}
           >
             <ImagePlus size={14} aria-hidden />
           </button>
@@ -337,8 +339,8 @@ export function ComposerInput({
             ref={textareaRef}
             placeholder={
               disabled
-                ? "Review in progress. Chat will re-enable when it completes."
-                : "Ask Codex to do something..."
+                ? t("common.loading")
+                : t("composer.placeholder")
             }
             value={text}
             onChange={handleTextareaChange}

@@ -1,5 +1,6 @@
 import type { GitHubIssue, GitHubPullRequest, GitLogEntry } from "../../../types";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Menu, MenuItem } from "@tauri-apps/api/menu";
 import { LogicalPosition } from "@tauri-apps/api/dpi";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -233,6 +234,7 @@ function CommitButton({
   commitLoading,
   onCommit,
 }: CommitButtonProps) {
+  const { t } = useTranslation();
   const hasMessage = commitMessage.trim().length > 0;
   const hasChanges = hasStagedFiles || hasUnstagedFiles;
   const canCommit = hasMessage && hasChanges && !commitLoading;
@@ -252,12 +254,12 @@ function CommitButton({
         disabled={!canCommit}
         title={
           !hasMessage
-            ? "Enter a commit message"
+            ? t("git.commitMessage")
             : !hasChanges
-              ? "No changes to commit"
+              ? t("git.noChanges")
               : hasStagedFiles
-                ? "Commit staged changes"
-                : "Commit all unstaged changes"
+                ? t("git.commit")
+                : t("git.commit")
         }
       >
         {commitLoading ? (
@@ -277,7 +279,7 @@ function CommitButton({
             <path d="M20 6 9 17l-5-5" />
           </svg>
           )}
-        <span>{commitLoading ? "Committing..." : "Commit"}</span>
+        <span>{commitLoading ? t("common.loading") : t("git.commit")}</span>
       </button>
     </div>
   );
@@ -498,6 +500,7 @@ function DiffSection({
   onFileClick,
   onShowFileMenu,
 }: DiffSectionProps) {
+  const { t } = useTranslation();
   const filePaths = files.map((file) => file.path);
   const canStageAll =
     section === "unstaged" &&
@@ -534,7 +537,7 @@ function DiffSection({
                     }
                   })();
                 }}
-                data-tooltip="Stage All Changes"
+                data-tooltip={t("git.stageAll")}
                 aria-label="Stage all changes"
               >
                 <Plus size={12} aria-hidden />
@@ -551,7 +554,7 @@ function DiffSection({
                     }
                   })();
                 }}
-                data-tooltip="Unstage All Changes"
+                data-tooltip={t("git.unstageAll")}
                 aria-label="Unstage all changes"
               >
                 <Minus size={12} aria-hidden />
@@ -564,7 +567,7 @@ function DiffSection({
                 onClick={() => {
                   void onDiscardFiles?.(filePaths);
                 }}
-                data-tooltip="Discard All Changes"
+                data-tooltip={t("git.discardChanges")}
                 aria-label="Discard all changes"
               >
                 <RotateCcw size={12} aria-hidden />
@@ -724,6 +727,7 @@ export function GitDiffPanel({
   syncError = null,
   commitsAhead = 0,
 }: GitDiffPanelProps) {
+  const { t } = useTranslation();
   const [dismissedErrorSignatures, setDismissedErrorSignatures] = useState<Set<string>>(
     new Set(),
   );
@@ -1284,7 +1288,7 @@ export function GitDiffPanel({
       ) : mode === "issues" ? (
         <>
           <div className="diff-status diff-status-issues">
-            <span>GitHub issues</span>
+            <span>{t("issues.title")}</span>
             {issuesLoading && <span className="git-panel-spinner" aria-hidden />}
           </div>
           <div className="git-log-sync">
@@ -1294,7 +1298,7 @@ export function GitDiffPanel({
       ) : (
         <>
           <div className="diff-status diff-status-issues">
-            <span>GitHub pull requests</span>
+            <span>{t("issues.pullRequests")}</span>
             {pullRequestsLoading && (
               <span className="git-panel-spinner" aria-hidden />
             )}
@@ -1669,7 +1673,7 @@ export function GitDiffPanel({
           )}
           {(logEntries.length > 0 || logLoading) && (
             <div className="git-log-section">
-              <div className="git-log-section-title">Recent commits</div>
+              <div className="git-log-section-title">{t("git.commits")}</div>
               <div className="git-log-section-list">
                 {logEntries.map((entry) => {
                   const isSelected = selectedCommitSha === entry.sha;

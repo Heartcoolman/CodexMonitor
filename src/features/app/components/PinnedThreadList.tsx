@@ -1,4 +1,5 @@
 import type { CSSProperties, MouseEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { ThreadSummary } from "../../../types";
 
@@ -39,6 +40,7 @@ export function PinnedThreadList({
   onSelectThread,
   onShowThreadMenu,
 }: PinnedThreadListProps) {
+  const { t } = useTranslation();
   return (
     <div className="thread-list pinned-thread-list">
       {rows.map(({ thread, depth, workspaceId }) => {
@@ -82,7 +84,7 @@ export function PinnedThreadList({
           >
             <span className={`thread-status ${statusClass}`} aria-hidden />
             {isPinned && (
-              <span className="thread-pin-icon" aria-label="Pinned">
+              <span className="thread-pin-icon" aria-label={t("sidebar.pinnedThreads")}>
                 📌
               </span>
             )}

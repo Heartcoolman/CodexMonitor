@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Check from "lucide-react/dist/esm/icons/check";
 import Copy from "lucide-react/dist/esm/icons/copy";
 import Terminal from "lucide-react/dist/esm/icons/terminal";
@@ -99,6 +100,7 @@ export function MainHeader({
   launchScriptsState,
   worktreeRename,
 }: MainHeaderProps) {
+  const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [branchQuery, setBranchQuery] = useState("");
@@ -211,7 +213,7 @@ export function MainHeader({
                 aria-haspopup="dialog"
                 aria-expanded={infoOpen}
                 data-tauri-drag-region="false"
-                title="Worktree info"
+                title={t("worktree.title")}
               >
                 {worktreeLabel || branchName}
               </button>
@@ -219,7 +221,7 @@ export function MainHeader({
                 <div className="worktree-info-popover popover-surface" role="dialog">
                   {worktreeRename && (
                     <div className="worktree-info-rename">
-                      <span className="worktree-info-label">Name</span>
+                      <span className="worktree-info-label">{t("common.name")}</span>
                       <div className="worktree-info-command">
                         <input
                           ref={renameInputRef}
@@ -266,8 +268,8 @@ export function MainHeader({
                           disabled={
                             worktreeRename.isSubmitting || !worktreeRename.isDirty
                           }
-                          aria-label="Confirm rename"
-                          title="Confirm rename"
+                          aria-label={t("common.confirm")}
+                          title={t("common.confirm")}
                         >
                           <Check aria-hidden />
                         </button>
@@ -303,10 +305,10 @@ export function MainHeader({
                       )}
                     </div>
                   )}
-                  <div className="worktree-info-title">Worktree</div>
+                  <div className="worktree-info-title">{t("worktree.title")}</div>
                   <div className="worktree-info-row">
                     <span className="worktree-info-label">
-                      Terminal{parentPath ? " (repo root)" : ""}
+                      {t("terminal.title")}{parentPath ? ` (${t("git.useWorkspaceRoot").toLowerCase().replace("使用", "")})` : ""}
                     </span>
                     <div className="worktree-info-command">
                       <code className="worktree-info-code">
@@ -319,8 +321,8 @@ export function MainHeader({
                           await navigator.clipboard.writeText(cdCommand);
                         }}
                         data-tauri-drag-region="false"
-                        aria-label="Copy command"
-                        title="Copy command"
+                        aria-label={t("common.copy")}
+                        title={t("common.copy")}
                       >
                         <Copy aria-hidden />
                       </button>
@@ -330,7 +332,7 @@ export function MainHeader({
                     </span>
                   </div>
                   <div className="worktree-info-row">
-                    <span className="worktree-info-label">Reveal</span>
+                    <span className="worktree-info-label">{t("files.revealInFinder")}</span>
                     <button
                       type="button"
                       className="worktree-info-reveal"
@@ -339,7 +341,7 @@ export function MainHeader({
                       }}
                       data-tauri-drag-region="false"
                     >
-                      Reveal in Finder
+                      {t("files.revealInFinder")}
                     </button>
                   </div>
                 </div>
@@ -409,7 +411,7 @@ export function MainHeader({
                             }
                           }
                         }}
-                        placeholder="Search or create branch"
+                        placeholder={t("git.switchBranch")}
                         className="branch-input"
                         autoFocus
                         data-tauri-drag-region="false"
@@ -440,7 +442,7 @@ export function MainHeader({
                         }}
                         data-tauri-drag-region="false"
                       >
-                        Create
+                        {t("common.create")}
                       </button>
                     </div>
                     {branchValidationMessage && (
@@ -462,7 +464,7 @@ export function MainHeader({
                     itemRole="menuitem"
                     itemDataTauriDragRegion="false"
                     emptyClassName="branch-empty"
-                    emptyText="No branches found"
+                    emptyText={t("worktree.noBranchesFound")}
                     onSelect={async (branch) => {
                       if (branch.name === branchName) {
                         return;
@@ -551,7 +553,7 @@ export function MainHeader({
             onClick={onToggleTerminal}
             data-tauri-drag-region="false"
             aria-label="Toggle terminal panel"
-            title="Terminal"
+            title={t("terminal.title")}
           >
             <Terminal size={14} aria-hidden />
           </button>

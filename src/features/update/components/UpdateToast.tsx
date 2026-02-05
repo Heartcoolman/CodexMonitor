@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { UpdateState } from "../hooks/useUpdater";
 
 type UpdateToastProps = {
@@ -21,6 +22,8 @@ function formatBytes(value: number) {
 }
 
 export function UpdateToast({ state, onUpdate, onDismiss }: UpdateToastProps) {
+  const { t } = useTranslation();
+
   if (state.stage === "idle") {
     return null;
   }
@@ -36,25 +39,25 @@ export function UpdateToast({ state, onUpdate, onDismiss }: UpdateToastProps) {
     <div className="update-toasts" role="region" aria-live="polite">
       <div className="update-toast" role="status">
         <div className="update-toast-header">
-          <div className="update-toast-title">Update</div>
+          <div className="update-toast-title">{t("update.title")}</div>
           {state.version ? (
             <div className="update-toast-version">v{state.version}</div>
           ) : null}
         </div>
         {state.stage === "checking" && (
-          <div className="update-toast-body">Checking for updates...</div>
+          <div className="update-toast-body">{t("common.loading")}</div>
         )}
         {state.stage === "available" && (
           <>
             <div className="update-toast-body">
-              A new version is available.
+              {t("update.available")}
             </div>
             <div className="update-toast-actions">
               <button className="secondary" onClick={onDismiss}>
-                Later
+                {t("update.later")}
               </button>
               <button className="primary" onClick={onUpdate}>
-                Update
+                {t("common.update")}
               </button>
             </div>
           </>
@@ -62,17 +65,17 @@ export function UpdateToast({ state, onUpdate, onDismiss }: UpdateToastProps) {
         {state.stage === "latest" && (
           <div className="update-toast-inline">
             <div className="update-toast-body update-toast-body-inline">
-              You’re up to date.
+              {t("about.upToDate")}
             </div>
             <button className="secondary" onClick={onDismiss}>
-              Dismiss
+              {t("common.close")}
             </button>
           </div>
         )}
         {state.stage === "downloading" && (
           <>
             <div className="update-toast-body">
-              Downloading update…
+              {t("update.downloading")}
             </div>
             <div className="update-toast-progress">
               <div className="update-toast-progress-bar">
@@ -90,23 +93,23 @@ export function UpdateToast({ state, onUpdate, onDismiss }: UpdateToastProps) {
           </>
         )}
         {state.stage === "installing" && (
-          <div className="update-toast-body">Installing update…</div>
+          <div className="update-toast-body">{t("update.installing")}</div>
         )}
         {state.stage === "restarting" && (
-          <div className="update-toast-body">Restarting…</div>
+          <div className="update-toast-body">{t("update.restart")}</div>
         )}
         {state.stage === "error" && (
           <>
-            <div className="update-toast-body">Update failed.</div>
+            <div className="update-toast-body">{t("update.failed")}</div>
             {state.error ? (
               <div className="update-toast-error">{state.error}</div>
             ) : null}
             <div className="update-toast-actions">
               <button className="secondary" onClick={onDismiss}>
-                Dismiss
+                {t("common.close")}
               </button>
               <button className="primary" onClick={onUpdate}>
-                Retry
+                {t("common.retry")}
               </button>
             </div>
           </>
