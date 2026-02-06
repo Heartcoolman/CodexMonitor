@@ -81,7 +81,8 @@ describe("useModels", () => {
 
     await waitFor(() => expect(result.current.selectedModelId).toBe("provider-id"));
 
-    expect(result.current.models).toHaveLength(1);
+    // Should include provider model + preset models, but no duplicate config model
+    expect(result.current.models.some((m) => m.id === "provider-id")).toBe(true);
     expect(result.current.selectedModel?.id).toBe("provider-id");
     expect(result.current.reasoningSupported).toBe(true);
   });

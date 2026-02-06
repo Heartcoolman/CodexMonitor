@@ -11,6 +11,26 @@ type UseModelsOptions = {
 
 const CONFIG_MODEL_DESCRIPTION = "Configured in CODEX_HOME/config.toml";
 
+/**
+ * Hardcoded models that should always appear in the model list,
+ * even if the backend hasn't started returning them yet.
+ */
+const PRESET_MODELS: ModelOption[] = [
+  {
+    id: "gpt-5.3-codex",
+    model: "gpt-5.3-codex",
+    displayName: "GPT-5.3 Codex",
+    description: "Latest GPT-5.3 model optimized for code generation",
+    supportedReasoningEfforts: [
+      { reasoningEffort: "low", description: "Low reasoning effort" },
+      { reasoningEffort: "medium", description: "Medium reasoning effort" },
+      { reasoningEffort: "high", description: "High reasoning effort" },
+    ],
+    defaultReasoningEffort: "medium",
+    isDefault: false,
+  },
+];
+
 const normalizeEffort = (value: unknown): string | null => {
   if (typeof value !== "string") {
     return null;
@@ -216,25 +236,39 @@ export function useModels({
         isDefault: Boolean(item.isDefault ?? item.is_default ?? false),
       }));
       const data = (() => {
-        if (!configModelFromConfig) {
-          return dataFromServer;
+        // Start with server data
+        let result = [...dataFromServer];
+
+        // Add preset models if not already present from server
+        for (const preset of PRESET_MODELS) {
+          const existsInServer = result.some(
+            (model) => model.model === preset.model,
+          );
+          if (!existsInServer) {
+            result.push(preset);
+          }
         }
-        const hasConfigModel = dataFromServer.some(
-          (model) => model.model === configModelFromConfig,
-        );
-        if (hasConfigModel) {
-          return dataFromServer;
+
+        // Add config model if specified and not already present
+        if (configModelFromConfig) {
+          const hasConfigModel = result.some(
+            (model) => model.model === configModelFromConfig,
+          );
+          if (!hasConfigModel) {
+            const configOption: ModelOption = {
+              id: configModelFromConfig,
+              model: configModelFromConfig,
+              displayName: `${configModelFromConfig} (config)`,
+              description: CONFIG_MODEL_DESCRIPTION,
+              supportedReasoningEfforts: [],
+              defaultReasoningEffort: null,
+              isDefault: false,
+            };
+            result = [configOption, ...result];
+          }
         }
-        const configOption: ModelOption = {
-          id: configModelFromConfig,
-          model: configModelFromConfig,
-          displayName: `${configModelFromConfig} (config)`,
-          description: CONFIG_MODEL_DESCRIPTION,
-          supportedReasoningEfforts: [],
-          defaultReasoningEffort: null,
-          isDefault: false,
-        };
-        return [configOption, ...dataFromServer];
+
+        return result;
       })();
       setModels(data);
       lastFetchedWorkspaceId.current = workspaceId;
