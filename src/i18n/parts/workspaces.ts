@@ -84,7 +84,6 @@ export const dict: Record<string, string> = {
 
   // ── workspaceHomeHelpers ─────────────────────────────────────
   "Default model": "默认模型",
-  "Select models": "选择模型",
 
   // ── workspaceGroups ──────────────────────────────────────────
   "Ungrouped": "未分组",

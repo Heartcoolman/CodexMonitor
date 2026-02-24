@@ -138,7 +138,6 @@ export const dict: Record<string, string> = {
   "Loading agents": "正在加载智能体",
 
   // ── ThreadRow ──
-  "Pinned": "已固定",
 
   // ── WorkspaceCard ──
   "Show agents": "显示智能体",

@@ -22,7 +22,6 @@ export const dict: Record<string, string> = {
   "About": "关于",
 
   // SETTINGS_SECTION_LABELS
-  "Display & Sound": "显示与声音",
 
   // DICTATION_MODELS
   "Tiny": "极小",
@@ -390,7 +389,7 @@ export const dict: Record<string, string> = {
   "Default": "默认",
 
   // SettingsOpenAppsSection
-  "Customize the Open in menu shown in the title bar and file previews.": "自定义标题栏和文件预览中显示的"打开方式"菜单。",
+  "Customize the Open in menu shown in the title bar and file previews.": "自定义标题栏和文件预览中显示的「打开方式」菜单。",
   "Label": "标签",
   "Label required": "标签为必填",
   "App name required": "应用名称为必填",

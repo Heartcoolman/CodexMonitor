@@ -111,11 +111,8 @@ export const dict: Record<string, string> = {
 
   // === GitDiffPanelShared.tsx - DiffFileRow ===
   "Stage Changes": "暂存更改",
-  "Stage file": "暂存文件",
   "Unstage Changes": "取消暂存更改",
-  "Unstage file": "取消暂存文件",
   "Discard Changes": "放弃更改",
-  "Discard changes": "放弃更改",
   "File actions": "文件操作",
 
   // === GitDiffPanelShared.tsx - DiffSection ===
